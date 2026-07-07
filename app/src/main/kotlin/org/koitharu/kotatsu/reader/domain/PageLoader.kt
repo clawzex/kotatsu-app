@@ -369,7 +369,6 @@ class PageLoader @Inject constructor(
 			.url(pageUrl)
 			.get()
 			.header(CommonHeaders.ACCEPT, "image/avif,image/webp,image/apng,image/*,*/*;q=0.8")
-			.header(CommonHeaders.ACCEPT_ENCODING, "gzip, deflate, br")
 			.cacheControl(PAGE_CACHE_CONTROL)
 			.tag(MangaSource::class.java, mangaSource)
 			.build()

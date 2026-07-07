@@ -23,9 +23,8 @@ class BrowserHeadersInterceptor : Interceptor {
 		if (request.header("Upgrade-Insecure-Requests") == null) {
 			builder.header("Upgrade-Insecure-Requests", "1")
 		}
-		if (request.header(CommonHeaders.ACCEPT_ENCODING) == null) {
-			builder.header(CommonHeaders.ACCEPT_ENCODING, "gzip, deflate, br")
-		}
+		// Do NOT set Accept-Encoding here — OkHttp adds it and transparently decompresses
+		// only when the header is absent. Setting it manually breaks all parser responses.
 		return chain.proceed(builder.build())
 	}
 }
