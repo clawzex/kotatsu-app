@@ -29,6 +29,7 @@ class AndroidCookieJar : MutableCookieJar {
 		for (cookie in cookies) {
 			cookieManager.setCookie(urlString, cookie.toString())
 		}
+		cookieManager.flush()
 	}
 
 	override fun removeCookies(url: HttpUrl, predicate: Predicate<Cookie>?) {

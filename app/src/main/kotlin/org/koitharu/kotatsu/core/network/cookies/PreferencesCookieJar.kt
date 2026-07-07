@@ -44,14 +44,16 @@ class PreferencesCookieJar(
 	@WorkerThread
 	@Synchronized
 	override fun saveFromResponse(url: HttpUrl, cookies: List<Cookie>) {
+		if (cookies.isEmpty()) {
+			return
+		}
+		loadPersistent()
 		val wrapped = cookies.map { CookieWrapper(it) }
 		prefs.edit(commit = true) {
 			for (cookie in wrapped) {
 				val key = cookie.key()
 				cache[key] = cookie
-				if (cookie.cookie.persistent) {
-					putString(key, cookie.encode())
-				}
+				putString(key, cookie.encode())
 			}
 		}
 	}

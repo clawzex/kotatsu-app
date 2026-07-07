@@ -66,9 +66,10 @@ interface NetworkModule {
 			proxyProvider: ProxyProvider,
 		): OkHttpClient = OkHttpClient.Builder().apply {
 			assertNotInMainThread()
-			connectTimeout(20, TimeUnit.SECONDS)
-			readTimeout(60, TimeUnit.SECONDS)
+			connectTimeout(15, TimeUnit.SECONDS)
+			readTimeout(45, TimeUnit.SECONDS)
 			writeTimeout(20, TimeUnit.SECONDS)
+			callTimeout(60, TimeUnit.SECONDS)
 			cookieJar(cookieJar)
 			proxySelector(proxyProvider.selector)
 			proxyAuthenticator(proxyProvider.authenticator)
@@ -79,7 +80,9 @@ interface NetworkModule {
 				installExtraCertificates(contextProvider.get())
 			}
 			cache(cache)
+			addInterceptor(BrowserHeadersInterceptor())
 			addInterceptor(GZipInterceptor())
+			addInterceptor(RetryInterceptor())
 			addInterceptor(CloudFlareInterceptor())
 			addInterceptor(RateLimitInterceptor())
 			if (BuildConfig.DEBUG) {

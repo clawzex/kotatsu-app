@@ -90,6 +90,7 @@ class WebViewExecutor @Inject constructor(
 							webView.loadUrl(exception.url)
 						}
 					}
+					android.webkit.CookieManager.getInstance().flush()
 				} finally {
 					webView.reset()
 				}

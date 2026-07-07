@@ -31,6 +31,7 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.sync.withPermit
+import okhttp3.CacheControl
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okio.use
@@ -73,7 +74,9 @@ import org.koitharu.kotatsu.parsers.util.requireBody
 import org.koitharu.kotatsu.parsers.util.runCatchingCancellable
 import org.koitharu.kotatsu.reader.ui.pager.ReaderPage
 import java.io.File
+import java.io.IOException
 import java.util.LinkedList
+import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.zip.ZipFile
 import javax.inject.Inject
@@ -96,7 +99,7 @@ class PageLoader @Inject constructor(
 	val loaderScope = lifecycle.lifecycleScope + InternalErrorHandler() + Dispatchers.Default
 
 	private val tasks = LongSparseArray<ProgressDeferred<Uri, Float>>()
-	private val semaphore = Semaphore(3)
+	private val semaphore = Semaphore(5)
 	private val convertLock = Mutex()
 	private val prefetchLock = Mutex()
 
@@ -299,13 +302,32 @@ class PageLoader @Inject constructor(
 					downloadSlowdownDispatcher.delay(page.source)
 				}
 				val request = createPageRequest(pageUrl, page.source)
-				imageProxyInterceptor.interceptPageRequest(request, okHttp).ensureSuccess().use { response ->
-					response.requireBody().withProgress(progress).use {
-						cache.set(pageUrl, it.source(), it.contentType()?.toMimeType())
-					}
-				}.toUri()
+				downloadPageWithRetry(request, page.source, progress)
 			}
 		}
+	}
+
+	private suspend fun downloadPageWithRetry(
+		request: Request,
+		source: MangaSource,
+		progress: MutableStateFlow<Float>,
+	): Uri {
+		var lastError: IOException? = null
+		repeat(PAGE_DOWNLOAD_RETRIES) { attempt ->
+			try {
+				return imageProxyInterceptor.interceptPageRequest(request, okHttp).ensureSuccess().use { response ->
+					response.requireBody().withProgress(progress).use {
+						cache.set(request.url.toString(), it.source(), it.contentType()?.toMimeType())
+					}
+				}.toUri()
+			} catch (e: IOException) {
+				lastError = e
+				if (attempt == PAGE_DOWNLOAD_RETRIES - 1) {
+					throw e
+				}
+			}
+		}
+		throw lastError ?: IOException("Failed to download page for $source")
 	}
 
 	private fun isLowRam(): Boolean {
@@ -335,14 +357,20 @@ class PageLoader @Inject constructor(
 	companion object {
 
 		private const val PROGRESS_UNDEFINED = -1f
-		private const val PREFETCH_LIMIT_DEFAULT = 6
+		private const val PREFETCH_LIMIT_DEFAULT = 5
 		private const val PREFETCH_MIN_RAM_MB = 80L
+		private const val PAGE_DOWNLOAD_RETRIES = 3
+
+		private val PAGE_CACHE_CONTROL: CacheControl = CacheControl.Builder()
+			.maxStale(7, TimeUnit.DAYS)
+			.build()
 
 		fun createPageRequest(pageUrl: String, mangaSource: MangaSource) = Request.Builder()
 			.url(pageUrl)
 			.get()
-			.header(CommonHeaders.ACCEPT, "image/webp,image/png;q=0.9,image/jpeg,*/*;q=0.8")
-			.cacheControl(CommonHeaders.CACHE_CONTROL_NO_STORE)
+			.header(CommonHeaders.ACCEPT, "image/avif,image/webp,image/apng,image/*,*/*;q=0.8")
+			.header(CommonHeaders.ACCEPT_ENCODING, "gzip, deflate, br")
+			.cacheControl(PAGE_CACHE_CONTROL)
 			.tag(MangaSource::class.java, mangaSource)
 			.build()
 
