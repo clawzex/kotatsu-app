@@ -7,4 +7,5 @@
 	<color name="ios_label_tertiary">#4DEBEBF5</color>
 	<color name="ios_separator">#33FFFFFF</color>
 	<color name="ios_search_field_bg">#3A767680</color>
+	<color name="ios_tab_bar_frosted">@color/ios_frosted_amoled</color>
 </resources>

@@ -32,10 +32,12 @@
 	<dimen name="ios_footnote_size">13sp</dimen>
 	<dimen name="ios_caption_size">12sp</dimen>
 
-	<dimen name="ios_cover_corner">16dp</dimen>
+	<dimen name="ios_cover_corner">20dp</dimen>
 	<dimen name="ios_cover_corner_medium">12dp</dimen>
 	<dimen name="ios_cover_corner_small">8dp</dimen>
-	<dimen name="ios_hero_cover_width">140dp</dimen>
+	<dimen name="ios_hero_height">300dp</dimen>
+	<dimen name="ios_floating_button_size">40dp</dimen>
+	<dimen name="ios_detail_cover_width">132dp</dimen>
 	<dimen name="ios_grid_item_padding">8dp</dimen>
 	<dimen name="ios_settings_row_min_height">56dp</dimen>
 	<dimen name="ios_settings_icon_size">28dp</dimen>

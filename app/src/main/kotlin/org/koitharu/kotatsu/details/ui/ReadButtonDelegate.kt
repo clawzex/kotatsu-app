@@ -24,6 +24,7 @@ import org.koitharu.kotatsu.R
 import org.koitharu.kotatsu.core.model.isLocal
 import org.koitharu.kotatsu.core.nav.AppRouter
 import org.koitharu.kotatsu.core.nav.ReaderIntent
+import org.koitharu.kotatsu.core.ui.util.IosUiHelper.setupPressAnimation
 import org.koitharu.kotatsu.core.util.ext.getThemeColor
 import org.koitharu.kotatsu.core.util.ext.observe
 import org.koitharu.kotatsu.details.ui.model.HistoryInfo
@@ -75,6 +76,7 @@ class ReadButtonDelegate(
 	fun attach(lifecycleOwner: LifecycleOwner) {
 		buttonRead.setOnClickListener(this)
 		buttonMenu.setOnClickListener(this)
+		splitButton.setupPressAnimation()
 		combine(viewModel.isLoading, viewModel.historyInfo, ::Pair)
 			.observe(lifecycleOwner) { (isLoading, historyInfo) ->
 				onHistoryChanged(isLoading, historyInfo)

@@ -64,7 +64,25 @@ class SlidingBottomNavigationView @JvmOverloads constructor(
 	override fun onFinishInflate() {
 		super.onFinishInflate()
 		@SuppressLint("RestrictedApi")
-		(getChildAt(0) as? BottomNavigationMenuView)?.isItemHorizontalTranslationEnabled = false
+		val menuView = getChildAt(0) as? BottomNavigationMenuView
+		menuView?.isItemHorizontalTranslationEnabled = false
+		menuView?.let(::setupItemPressAnimation)
+	}
+
+	private fun setupItemPressAnimation(menuView: BottomNavigationMenuView) {
+		for (index in 0 until menuView.childCount) {
+			val item = menuView.getChildAt(index)
+			item.setOnTouchListener { view, event ->
+				when (event.actionMasked) {
+					MotionEvent.ACTION_DOWN -> view.animate().alpha(0.45f).setDuration(80).start()
+					MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL ->
+						view.animate().alpha(1f).setDuration(180)
+							.setInterpolator(IosUiHelper.springInterpolator)
+							.start()
+				}
+				false
+			}
+		}
 	}
 
 	val isShownOrShowing: Boolean

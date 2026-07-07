@@ -13,6 +13,7 @@ import okhttp3.OkHttpClient
 import org.koitharu.kotatsu.BuildConfig
 import org.koitharu.kotatsu.core.network.cookies.AndroidCookieJar
 import org.koitharu.kotatsu.core.network.cookies.MutableCookieJar
+import org.koitharu.kotatsu.core.network.cookies.PersistentCookieJar
 import org.koitharu.kotatsu.core.network.cookies.PreferencesCookieJar
 import org.koitharu.kotatsu.core.network.imageproxy.ImageProxyInterceptor
 import org.koitharu.kotatsu.core.network.imageproxy.RealImageProxyInterceptor
@@ -42,7 +43,10 @@ interface NetworkModule {
 		fun provideCookieJar(
 			@ApplicationContext context: Context
 		): MutableCookieJar = runCatching {
-			AndroidCookieJar()
+			PersistentCookieJar(
+				primary = AndroidCookieJar(),
+				backup = PreferencesCookieJar(context),
+			)
 		}.getOrElse { e ->
 			e.printStackTraceDebug()
 			// WebView is not available

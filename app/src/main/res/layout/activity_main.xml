@@ -86,6 +86,7 @@
 
 	<org.koitharu.kotatsu.core.ui.widgets.SlidingBottomNavigationView
 		android:id="@+id/bottomNav"
+		style="@style/Widget.Kotatsu.iOS.BottomNavigationView"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_gravity="bottom"

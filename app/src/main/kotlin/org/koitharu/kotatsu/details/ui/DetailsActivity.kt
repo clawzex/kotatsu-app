@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.Toast
+import androidx.appcompat.widget.PopupMenu
 import androidx.activity.viewModels
 import androidx.core.text.buildSpannedString
 import androidx.core.text.inSpans
@@ -22,12 +23,16 @@ import androidx.core.view.updatePaddingRelative
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.transition.TransitionManager
 import coil3.ImageLoader
+import coil3.request.ErrorResult
 import coil3.request.ImageRequest
+import coil3.request.SuccessResult
 import coil3.request.allowRgb565
 import coil3.request.crossfade
 import coil3.request.lifecycle
+import coil3.request.target
 import coil3.request.transformations
 import coil3.size.Precision
+import coil3.size.Scale
 import coil3.transform.RoundedCornersTransformation
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.chip.Chip
@@ -43,10 +48,12 @@ import org.koitharu.kotatsu.bookmarks.domain.Bookmark
 import org.koitharu.kotatsu.core.image.CoilMemoryCacheKey
 import org.koitharu.kotatsu.core.model.FavouriteCategory
 import org.koitharu.kotatsu.core.model.LocalMangaSource
+import org.koitharu.kotatsu.core.model.MangaHistory
 import org.koitharu.kotatsu.core.model.UnknownMangaSource
 import org.koitharu.kotatsu.core.model.getSummary
 import org.koitharu.kotatsu.core.model.getTitle
 import org.koitharu.kotatsu.core.model.titleResId
+import org.koitharu.kotatsu.core.nav.AppRouter
 import org.koitharu.kotatsu.core.nav.ReaderIntent
 import org.koitharu.kotatsu.core.nav.router
 import org.koitharu.kotatsu.core.os.AppShortcutManager
@@ -60,6 +67,10 @@ import org.koitharu.kotatsu.core.ui.image.TextDrawable
 import org.koitharu.kotatsu.core.ui.image.TextViewTarget
 import org.koitharu.kotatsu.core.ui.list.OnListItemClickListener
 import org.koitharu.kotatsu.core.ui.sheet.BottomSheetCollapseCallback
+import org.koitharu.kotatsu.core.ui.util.IosUiHelper
+import org.koitharu.kotatsu.core.ui.util.IosUiHelper.applyBlurEffect
+import org.koitharu.kotatsu.core.ui.util.IosUiHelper.clearBlurEffect
+import org.koitharu.kotatsu.core.ui.util.IosUiHelper.setupPressAnimation
 import org.koitharu.kotatsu.core.ui.util.MenuInvalidator
 import org.koitharu.kotatsu.core.ui.util.ReversibleActionObserver
 import org.koitharu.kotatsu.core.ui.widgets.ChipsView
@@ -142,8 +153,9 @@ class DetailsActivity :
 		super.onCreate(savedInstanceState)
 		setContentView(ActivityDetailsBinding.inflate(layoutInflater))
 		infoBinding = LayoutDetailsTableBinding.bind(viewBinding.root)
-		setDisplayHomeAsUp(isEnabled = true, showUpAsClose = false)
+		setDisplayHomeAsUp(isEnabled = false, showUpAsClose = false)
 		supportActionBar?.setDisplayShowTitleEnabled(false)
+		setupFloatingActions()
 		viewBinding.chipFavorite.setOnClickListener(this)
 		infoBinding.textViewLocal.setOnClickListener(this)
 		infoBinding.textViewSource.setOnClickListener(this)
@@ -192,6 +204,7 @@ class DetailsActivity :
 		val menuInvalidator = MenuInvalidator(this)
 		viewModel.isStatsAvailable.observe(this, menuInvalidator)
 		viewModel.remoteManga.observe(this, menuInvalidator)
+		viewModel.manga.observe(this, ::updateFloatingActionVisibility)
 		viewModel.tags.observe(this, ::onTagsChanged)
 		viewModel.chapters.observe(this, PrefetchObserver(this))
 		viewModel.onDownloadStarted
@@ -215,6 +228,20 @@ class DetailsActivity :
 
 	override fun onClick(v: View) {
 		when (v.id) {
+			R.id.button_float_back -> onSupportNavigateUp()
+
+			R.id.button_float_share -> {
+				val manga = viewModel.getMangaOrNull() ?: return
+				router.showShareDialog(manga)
+			}
+
+			R.id.button_float_download -> {
+				val manga = viewModel.getMangaOrNull() ?: return
+				router.showDownloadDialog(manga, viewBinding.scrollView)
+			}
+
+			R.id.button_float_more -> showOverflowMenu(v)
+
 			R.id.textView_source -> {
 				val manga = viewModel.getMangaOrNull() ?: return
 				router.openList(manga.source, null, null)
@@ -242,16 +269,33 @@ class DetailsActivity :
 
 			R.id.button_description_more -> {
 				val tv = viewBinding.textViewDescription
+				val expanding = tv.maxLines != Int.MAX_VALUE
 				if (tv.context.isAnimationsEnabled) {
 					tv.parentView?.let {
 						TransitionManager.beginDelayedTransition(it)
 					}
-				}
-				if (tv.maxLines in 1 until Integer.MAX_VALUE) {
-					tv.maxLines = Integer.MAX_VALUE
+					if (expanding) {
+						tv.animate().alpha(0.6f).setDuration(120).withEndAction {
+							tv.maxLines = Int.MAX_VALUE
+							tv.animate().alpha(1f).setDuration(220)
+								.setInterpolator(IosUiHelper.springInterpolator)
+								.start()
+						}.start()
+					} else {
+						tv.maxLines = resources.getInteger(R.integer.details_description_lines)
+						tv.alpha = 0.6f
+						tv.animate().alpha(1f).setDuration(220)
+							.setInterpolator(IosUiHelper.springInterpolator)
+							.start()
+					}
+				} else if (expanding) {
+					tv.maxLines = Int.MAX_VALUE
 				} else {
 					tv.maxLines = resources.getInteger(R.integer.details_description_lines)
 				}
+				viewBinding.buttonDescriptionMore.text = getString(
+					if (expanding) R.string.collapse else R.string.read_more,
+				)
 			}
 
 			R.id.button_scrobbling_more -> {
@@ -370,6 +414,7 @@ class DetailsActivity :
 			infoBinding.textViewLocal.isVisible = true
 			infoBinding.textViewLocalLabel.isVisible = true
 		}
+		syncDetailDividers()
 	}
 
 	private fun onRelatedMangaChanged(related: List<MangaListModel>) {
@@ -391,6 +436,7 @@ class DetailsActivity :
 			).also { rv.adapter = it }
 		adapter.items = related
 		viewBinding.groupRelated.isVisible = true
+		viewBinding.buttonRelatedMore.isVisible = related.size > 4
 	}
 
 	private fun onLoadingStateChanged(isLoading: Boolean) {
@@ -418,6 +464,11 @@ class DetailsActivity :
 			textViewNsfw16.isVisible = manga.contentRating == ContentRating.SUGGESTIVE
 			textViewNsfw18.isVisible = manga.contentRating == ContentRating.ADULT
 			textViewDescription.text = details.description.ifNullOrEmpty { getString(R.string.no_description) }
+			if (manga.source == LocalMangaSource || manga.source == UnknownMangaSource) {
+				textViewSourceHeader?.isVisible = false
+			} else {
+				textViewSourceHeader?.textAndVisible = manga.source.getTitle(this@DetailsActivity)
+			}
 		}
 		with(infoBinding) {
 			val translation = details.getLocale()
@@ -431,6 +482,7 @@ class DetailsActivity :
 			infoBinding.textViewTranslationLabel.isVisible = infoBinding.textViewTranslation.isVisible
 			textViewAuthor.textAndVisible = manga.getAuthorsString()
 			textViewAuthorLabel.isVisible = textViewAuthor.isVisible
+			infoBinding.rowAuthor?.isVisible = textViewAuthor.isVisible
 			if (manga.hasRating) {
 				ratingBarRating.rating = manga.rating * ratingBarRating.numStars
 				ratingBarRating.isVisible = true
@@ -470,9 +522,11 @@ class DetailsActivity :
 				.transformations(RoundedCornersTransformation(resources.getDimension(R.dimen.chip_icon_corner)))
 				.allowRgb565(true)
 				.enqueueWith(coil)
+			syncDetailDividers()
 		}
 		title = manga.title
 		invalidateOptionsMenu()
+		updateFloatingActionVisibility(manga)
 	}
 
 	private fun onMangaRemoved(manga: Manga) {
@@ -512,15 +566,111 @@ class DetailsActivity :
 		textViewProgressLabel.isVisible = info.history != null
 		textViewProgress.isVisible = info.history != null
 		progress.isVisible = info.history != null
+		updateReadingStatus(info.history, info.percent)
+	}
+
+	private fun setupFloatingActions() {
+		val buttons = listOfNotNull(
+			viewBinding.buttonFloatBack,
+			viewBinding.buttonFloatShare,
+			viewBinding.buttonFloatDownload,
+			viewBinding.buttonFloatMore,
+		)
+		if (buttons.isEmpty()) {
+			return
+		}
+		viewBinding.buttonFloatBack?.setOnClickListener(this)
+		viewBinding.buttonFloatShare?.setOnClickListener(this)
+		viewBinding.buttonFloatDownload?.setOnClickListener(this)
+		viewBinding.buttonFloatMore?.setOnClickListener(this)
+		(buttons + listOfNotNull(viewBinding.chipFavorite, viewBinding.imageViewCover))
+			.forEach { it.setupPressAnimation() }
+	}
+
+	private fun showOverflowMenu(anchor: View) {
+		val popup = PopupMenu(this, anchor)
+		menuInflater.inflate(R.menu.opt_details, popup.menu)
+		menuProvider.onPrepareMenu(popup.menu)
+		popup.menu.findItem(R.id.action_share)?.isVisible = false
+		popup.menu.findItem(R.id.action_save)?.isVisible = false
+		popup.setOnMenuItemClickListener { menuProvider.onMenuItemSelected(it) }
+		popup.show()
+	}
+
+	private fun updateFloatingActionVisibility(manga: Manga?) {
+		val isLocal = manga?.source == LocalMangaSource
+		viewBinding.buttonFloatShare?.isVisible = manga != null && AppRouter.isShareSupported(manga)
+		viewBinding.buttonFloatDownload?.isVisible = manga != null && !isLocal
+	}
+
+	private fun updateReadingStatus(history: MangaHistory?, percent: Float) {
+		val statusView = viewBinding.textViewReadingStatus ?: return
+		if (history == null) {
+			statusView.isVisible = false
+			return
+		}
+		statusView.isVisible = true
+		statusView.text = getString(
+			if (ReadingProgress.isCompleted(percent)) {
+				R.string.status_completed
+			} else {
+				R.string.status_reading
+			},
+		)
+	}
+
+	private fun syncDetailDividers() = with(infoBinding) {
+		dividerAfterAuthor?.isVisible = rowAuthor?.isVisible == true
+		dividerAfterTranslation?.isVisible = textViewTranslation.isVisible
+		dividerAfterRating?.isVisible = ratingBarRating.isVisible
+		dividerAfterState?.isVisible = textViewState.isVisible
+		dividerAfterChapters?.isVisible = true
+		dividerAfterLocal?.isVisible = textViewLocal.isVisible
+	}
+
+	private fun loadCover(imageUrl: String?) {
+		viewBinding.imageViewCover.setImageAsync(imageUrl, viewModel.getMangaOrNull())
+		loadHeroBackdrop(imageUrl)
+	}
+
+	private fun loadHeroBackdrop(imageUrl: String?) {
+		val backdrop = viewBinding.imageViewHeroBackdrop ?: return
+		if (imageUrl.isNullOrEmpty()) {
+			backdrop.setImageDrawable(null)
+			backdrop.clearBlurEffect()
+			return
+		}
+		val manga = viewModel.getMangaOrNull()
+		ImageRequest.Builder(this)
+			.data(imageUrl)
+			.lifecycle(this)
+			.crossfade(true)
+			.scale(Scale.FILL)
+			.apply {
+				if (manga != null) {
+					mangaSourceExtra(manga.source)
+				}
+			}
+			.target(backdrop)
+			.listener(object : ImageRequest.Listener {
+				override fun onSuccess(request: ImageRequest, result: SuccessResult) {
+					backdrop.applyBlurEffect(48f)
+				}
+
+				override fun onError(request: ImageRequest, result: ErrorResult) {
+					backdrop.clearBlurEffect()
+				}
+
+				override fun onCancel(request: ImageRequest) {
+					backdrop.clearBlurEffect()
+				}
+			})
+			.enqueueWith(coil)
 	}
 
 	private fun onTagsChanged(tags: Collection<ChipsView.ChipModel>) {
 		viewBinding.chipsTags.isVisible = tags.isNotEmpty()
 		viewBinding.chipsTags.setChips(tags)
-	}
-
-	private fun loadCover(imageUrl: String?) {
-		viewBinding.imageViewCover.setImageAsync(imageUrl, viewModel.getMangaOrNull())
 	}
 
 	private fun String.withEstimatedTime(time: ReadingTime?): String {

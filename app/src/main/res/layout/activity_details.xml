@@ -5,6 +5,7 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
+	android:background="?android:colorBackground"
 	android:clipToPadding="false"
 	tools:context=".details.ui.DetailsActivity"
 	tools:ignore="ViewBindingType"
@@ -14,6 +15,7 @@
 		android:id="@+id/appbar"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:background="@android:color/transparent"
 		android:elevation="0dp"
 		android:fitsSystemWindows="true"
 		app:elevation="0dp"
@@ -22,7 +24,8 @@
 		<com.google.android.material.appbar.MaterialToolbar
 			android:id="@id/toolbar"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content" />
+			android:layout_height="0dp"
+			android:visibility="gone" />
 
 	</com.google.android.material.appbar.AppBarLayout>
 
@@ -42,28 +45,47 @@
 
 			<androidx.constraintlayout.widget.ConstraintLayout
 				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:paddingBottom="@dimen/margin_normal">
+				android:layout_height="wrap_content"
+				android:paddingBottom="@dimen/ios_spacing_section">
+
+				<ImageView
+					android:id="@+id/imageView_hero_backdrop"
+					android:layout_width="0dp"
+					android:layout_height="@dimen/ios_hero_height"
+					android:importantForAccessibility="no"
+					android:scaleType="centerCrop"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintTop_toTopOf="parent"
+					tools:ignore="ContentDescription"
+					tools:src="@tools:sample/backgrounds/scenic[1]" />
+
+				<View
+					android:id="@+id/view_hero_gradient"
+					android:layout_width="0dp"
+					android:layout_height="@dimen/ios_hero_height"
+					android:background="@drawable/bg_ios_hero_gradient"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintTop_toTopOf="parent" />
 
 				<org.koitharu.kotatsu.image.ui.CoverImageView
 					android:id="@+id/imageView_cover"
-					android:layout_width="0dp"
+					android:layout_width="@dimen/ios_detail_cover_width"
 					android:layout_height="0dp"
 					android:layout_marginStart="@dimen/ios_spacing_lg"
-					android:layout_marginTop="@dimen/ios_spacing_lg"
+					android:layout_marginTop="72dp"
 					android:background="?colorSecondaryContainer"
 					android:clipToOutline="true"
+					android:elevation="@dimen/ios_card_elevation"
 					android:foreground="?selectableItemBackground"
 					android:scaleType="centerCrop"
 					app:allowRgb565="false"
 					app:aspectRationHeight="0"
 					app:aspectRationWidth="0"
 					app:layout_constraintDimensionRatio="H,13:18"
-					app:layout_constraintEnd_toEndOf="parent"
-					app:layout_constraintHorizontal_bias="0"
 					app:layout_constraintStart_toStartOf="parent"
 					app:layout_constraintTop_toTopOf="parent"
-					app:layout_constraintWidth_percent="0.38"
 					app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Kotatsu.Cover"
 					app:useExistingDrawable="true"
 					tools:background="@tools:sample/backgrounds/scenic[5]"
@@ -76,6 +98,7 @@
 					android:layout_height="wrap_content"
 					android:layout_margin="@dimen/card_indicator_offset"
 					android:backgroundTint="@color/nsfw_16"
+					android:elevation="@dimen/ios_card_elevation"
 					android:text="@string/nsfw_16"
 					android:visibility="gone"
 					app:layout_constraintBottom_toBottomOf="@id/imageView_cover"
@@ -89,6 +112,7 @@
 					android:layout_height="wrap_content"
 					android:layout_margin="@dimen/card_indicator_offset"
 					android:backgroundTint="@color/nsfw_18"
+					android:elevation="@dimen/ios_card_elevation"
 					android:text="@string/nsfw"
 					android:visibility="gone"
 					app:layout_constraintBottom_toBottomOf="@id/imageView_cover"
@@ -98,12 +122,13 @@
 					android:id="@+id/textView_title"
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
-					android:layout_marginStart="16dp"
-					android:layout_marginTop="16dp"
-					android:layout_marginEnd="16dp"
+					android:layout_marginStart="@dimen/ios_spacing_md"
+					android:layout_marginTop="72dp"
+					android:layout_marginEnd="@dimen/ios_spacing_lg"
 					android:ellipsize="end"
 					android:maxLines="@integer/details_title_lines"
 					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Title2"
+					android:textColor="@android:color/white"
 					android:textIsSelectable="true"
 					app:layout_constraintEnd_toEndOf="parent"
 					app:layout_constraintStart_toEndOf="@id/imageView_cover"
@@ -114,37 +139,71 @@
 					android:id="@+id/textView_subtitle"
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
-					android:layout_marginStart="16dp"
-					android:layout_marginTop="4dp"
-					android:layout_marginEnd="16dp"
+					android:layout_marginStart="@dimen/ios_spacing_md"
+					android:layout_marginTop="@dimen/ios_spacing_xs"
+					android:layout_marginEnd="@dimen/ios_spacing_lg"
 					android:ellipsize="end"
 					android:maxLines="3"
-					android:textAppearance="?attr/textAppearanceBodyMedium"
+					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Subhead"
+					android:textColor="#CCFFFFFF"
 					android:textIsSelectable="true"
 					app:layout_constraintEnd_toEndOf="parent"
 					app:layout_constraintStart_toEndOf="@id/imageView_cover"
 					app:layout_constraintTop_toBottomOf="@id/textView_title"
 					tools:text="@tools:sample/lorem[12]" />
 
-				<com.google.android.material.chip.Chip
-					android:id="@+id/chip_favorite"
-					style="@style/Widget.Kotatsu.Chip.Dropdown"
-					android:layout_width="wrap_content"
+				<TextView
+					android:id="@+id/textView_source_header"
+					android:layout_width="0dp"
 					android:layout_height="wrap_content"
-					android:layout_marginStart="16dp"
-					android:layout_marginTop="8dp"
-					app:chipIcon="@drawable/ic_heart_outline"
+					android:layout_marginStart="@dimen/ios_spacing_md"
+					android:layout_marginTop="@dimen/ios_spacing_sm"
+					android:layout_marginEnd="@dimen/ios_spacing_lg"
+					android:ellipsize="end"
+					android:singleLine="true"
+					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Footnote"
+					android:textColor="#B3FFFFFF"
+					app:layout_constraintEnd_toEndOf="parent"
 					app:layout_constraintStart_toEndOf="@id/imageView_cover"
 					app:layout_constraintTop_toBottomOf="@id/textView_subtitle"
+					tools:text="MangaDex" />
+
+				<com.google.android.material.chip.Chip
+					android:id="@+id/chip_favorite"
+					style="@style/Widget.Kotatsu.iOS.Chip"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginStart="@dimen/ios_spacing_md"
+					android:layout_marginTop="@dimen/ios_spacing_sm"
+					app:chipIcon="@drawable/ic_heart_outline"
+					app:layout_constraintStart_toEndOf="@id/imageView_cover"
+					app:layout_constraintTop_toBottomOf="@id/textView_source_header"
 					tools:text="@string/add_to_favourites" />
+
+				<TextView
+					android:id="@+id/textView_reading_status"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginStart="@dimen/ios_spacing_sm"
+					android:background="@drawable/bg_ios_floating_button"
+					android:paddingHorizontal="@dimen/ios_spacing_md"
+					android:paddingVertical="@dimen/ios_spacing_xs"
+					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Footnote"
+					android:textColor="@android:color/white"
+					android:visibility="gone"
+					app:layout_constraintBottom_toBottomOf="@id/chip_favorite"
+					app:layout_constraintStart_toEndOf="@id/chip_favorite"
+					app:layout_constraintTop_toTopOf="@id/chip_favorite"
+					tools:text="Reading"
+					tools:visibility="visible" />
 
 				<androidx.constraintlayout.widget.Barrier
 					android:id="@+id/barrier_header"
-					android:layout_width="0dp"
+					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					app:barrierDirection="bottom"
-					app:barrierMargin="@dimen/margin_normal"
-					app:constraint_referenced_ids="imageView_cover,chip_favorite" />
+					app:barrierMargin="@dimen/ios_spacing_lg"
+					app:constraint_referenced_ids="imageView_cover,chip_favorite,textView_reading_status" />
 
 				<include layout="@layout/layout_details_table" />
 
@@ -152,25 +211,21 @@
 					android:id="@+id/textView_description_title"
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
-					android:layout_marginStart="@dimen/margin_small"
-					android:layout_marginTop="@dimen/margin_normal"
-					android:layout_weight="1"
-					android:gravity="center_vertical|start"
-					android:padding="@dimen/grid_spacing"
-					android:singleLine="true"
+					android:layout_marginStart="@dimen/ios_spacing_lg"
+					android:layout_marginTop="@dimen/ios_spacing_xl"
 					android:text="@string/description"
-					android:textAppearance="?textAppearanceTitleSmall"
+					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Title3"
 					app:layout_constraintEnd_toStartOf="@id/button_description_more"
 					app:layout_constraintStart_toStartOf="parent"
-					app:layout_constraintTop_toBottomOf="@id/textView_progress_label" />
+					app:layout_constraintTop_toBottomOf="@id/card_details" />
 
 				<Button
 					android:id="@+id/button_description_more"
 					style="@style/Widget.Kotatsu.Button.More"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_marginEnd="8dp"
-					android:text="@string/more"
+					android:layout_marginEnd="@dimen/ios_spacing_lg"
+					android:text="@string/read_more"
 					app:layout_constraintBaseline_toBaselineOf="@id/textView_description_title"
 					app:layout_constraintEnd_toEndOf="parent" />
 
@@ -178,13 +233,12 @@
 					android:id="@+id/textView_description"
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
-					android:layout_marginStart="@dimen/margin_normal"
-					android:layout_marginTop="@dimen/margin_small"
-					android:layout_marginEnd="@dimen/margin_normal"
+					android:layout_marginHorizontal="@dimen/ios_spacing_lg"
+					android:layout_marginTop="@dimen/ios_spacing_sm"
 					android:ellipsize="end"
-					android:lineSpacingMultiplier="1.2"
+					android:lineSpacingMultiplier="1.25"
 					android:maxLines="@integer/details_description_lines"
-					android:textAppearance="?attr/textAppearanceBodyMedium"
+					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Body"
 					android:textIsSelectable="true"
 					app:layout_constraintEnd_toEndOf="parent"
 					app:layout_constraintStart_toStartOf="parent"
@@ -196,10 +250,11 @@
 					android:id="@+id/chips_tags"
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
-					android:layout_marginHorizontal="@dimen/screen_padding"
-					android:layout_marginTop="@dimen/margin_normal"
-					app:chipSpacingHorizontal="6dp"
-					app:chipSpacingVertical="6dp"
+					android:layout_marginHorizontal="@dimen/ios_spacing_lg"
+					android:layout_marginTop="@dimen/ios_spacing_lg"
+					app:chipSpacingHorizontal="8dp"
+					app:chipSpacingVertical="8dp"
+					app:chipStyle="@style/Widget.Kotatsu.iOS.Chip"
 					app:layout_constraintEnd_toEndOf="parent"
 					app:layout_constraintStart_toStartOf="parent"
 					app:layout_constraintTop_toBottomOf="@+id/textView_description" />
@@ -208,14 +263,10 @@
 					android:id="@+id/textView_scrobbling_title"
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
-					android:layout_marginStart="@dimen/margin_small"
-					android:layout_marginTop="@dimen/margin_normal"
-					android:layout_weight="1"
-					android:gravity="center_vertical|start"
-					android:padding="@dimen/grid_spacing"
-					android:singleLine="true"
+					android:layout_marginStart="@dimen/ios_spacing_lg"
+					android:layout_marginTop="@dimen/ios_spacing_xl"
 					android:text="@string/tracking"
-					android:textAppearance="?textAppearanceTitleSmall"
+					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Title3"
 					app:layout_constraintEnd_toStartOf="@id/button_scrobbling_more"
 					app:layout_constraintStart_toStartOf="parent"
 					app:layout_constraintTop_toBottomOf="@id/chips_tags" />
@@ -225,7 +276,7 @@
 					style="@style/Widget.Kotatsu.Button.More"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_marginEnd="8dp"
+					android:layout_marginEnd="@dimen/ios_spacing_lg"
 					android:text="@string/manage"
 					app:layout_constraintBaseline_toBaselineOf="@id/textView_scrobbling_title"
 					app:layout_constraintEnd_toEndOf="parent" />
@@ -234,9 +285,7 @@
 					android:id="@+id/recyclerView_scrobbling"
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
-					android:layout_marginStart="16dp"
-					android:layout_marginEnd="16dp"
-					android:layout_marginBottom="12dp"
+					android:layout_marginHorizontal="@dimen/ios_spacing_lg"
 					android:nestedScrollingEnabled="false"
 					android:orientation="vertical"
 					android:overScrollMode="never"
@@ -262,14 +311,10 @@
 					android:id="@+id/textView_related_title"
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
-					android:layout_marginStart="@dimen/margin_small"
-					android:layout_marginTop="@dimen/margin_small"
-					android:layout_weight="1"
-					android:gravity="center_vertical|start"
-					android:padding="@dimen/grid_spacing"
-					android:singleLine="true"
+					android:layout_marginStart="@dimen/ios_spacing_lg"
+					android:layout_marginTop="@dimen/ios_spacing_xl"
 					android:text="@string/related_manga"
-					android:textAppearance="?textAppearanceTitleSmall"
+					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Title3"
 					app:layout_constraintEnd_toStartOf="@id/button_related_more"
 					app:layout_constraintStart_toStartOf="parent"
 					app:layout_constraintTop_toBottomOf="@id/recyclerView_scrobbling" />
@@ -279,7 +324,7 @@
 					style="@style/Widget.Kotatsu.Button.More"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_marginEnd="8dp"
+					android:layout_marginEnd="@dimen/ios_spacing_lg"
 					android:text="@string/show_all"
 					android:visibility="gone"
 					app:layout_constraintBaseline_toBaselineOf="@id/textView_related_title"
@@ -289,12 +334,11 @@
 					android:id="@+id/recyclerView_related"
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
-					android:layout_marginBottom="6dp"
+					android:layout_marginTop="@dimen/ios_spacing_sm"
 					android:clipToPadding="false"
 					android:nestedScrollingEnabled="false"
 					android:orientation="horizontal"
-					android:paddingStart="12dp"
-					android:paddingEnd="12dp"
+					android:paddingHorizontal="@dimen/ios_spacing_md"
 					app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 					app:layout_constraintEnd_toEndOf="parent"
 					app:layout_constraintStart_toStartOf="parent"
@@ -314,10 +358,57 @@
 		</androidx.core.widget.NestedScrollView>
 	</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+	<LinearLayout
+		android:id="@+id/layout_floating_actions"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:elevation="12dp"
+		android:fitsSystemWindows="true"
+		android:gravity="center_vertical"
+		android:orientation="horizontal"
+		android:paddingHorizontal="@dimen/ios_spacing_lg"
+		android:paddingTop="@dimen/ios_spacing_sm"
+		android:paddingBottom="@dimen/ios_spacing_sm">
+
+		<ImageButton
+			android:id="@+id/button_float_back"
+			style="@style/Widget.Kotatsu.iOS.FloatingIconButton"
+			android:contentDescription="@string/back"
+			android:src="@drawable/ic_ios_back" />
+
+		<View
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			android:layout_weight="1" />
+
+		<ImageButton
+			android:id="@+id/button_float_share"
+			style="@style/Widget.Kotatsu.iOS.FloatingIconButton"
+			android:contentDescription="@string/share"
+			android:src="@drawable/ic_ios_share" />
+
+		<ImageButton
+			android:id="@+id/button_float_download"
+			style="@style/Widget.Kotatsu.iOS.FloatingIconButton"
+			android:layout_marginStart="@dimen/ios_spacing_sm"
+			android:contentDescription="@string/download"
+			android:src="@drawable/ic_download"
+			app:tint="@android:color/white" />
+
+		<ImageButton
+			android:id="@+id/button_float_more"
+			style="@style/Widget.Kotatsu.iOS.FloatingIconButton"
+			android:layout_marginStart="@dimen/ios_spacing_sm"
+			android:contentDescription="@string/show_menu"
+			android:src="@drawable/ic_expand_more"
+			app:tint="@android:color/white" />
+
+	</LinearLayout>
+
 	<androidx.fragment.app.FragmentContainerView
 		android:id="@+id/container_bottom_sheet"
 		android:name="org.koitharu.kotatsu.details.ui.pager.ChaptersPagesSheet"
-		style="@style/Widget.Material3.BottomSheet"
+		style="@style/Widget.Kotatsu.iOS.BottomSheet"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:elevation="6dp"

@@ -1,10 +1,13 @@
 package org.koitharu.kotatsu.core.network.cookies
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.annotation.WorkerThread
 import androidx.collection.ArrayMap
 import androidx.core.content.edit
 import androidx.core.util.Predicate
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.Cookie
@@ -18,8 +21,12 @@ class PreferencesCookieJar(
 ) : MutableCookieJar {
 
 	private val cache = ArrayMap<String, CookieWrapper>()
-	private val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+	private val prefs = createSecurePreferences(context)
 	private var isLoaded = false
+
+	init {
+		migrateLegacyPreferences(context)
+	}
 
 	@WorkerThread
 	@Synchronized
@@ -106,6 +113,57 @@ class PreferencesCookieJar(
 		prefs.edit(commit = true) {
 			for (key in keys) {
 				remove(key)
+			}
+		}
+	}
+
+	companion object {
+
+		private fun createSecurePreferences(context: Context): SharedPreferences = try {
+			val masterKey = MasterKey.Builder(context)
+				.setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+				.build()
+			EncryptedSharedPreferences.create(
+				context,
+				PREFS_NAME,
+				masterKey,
+				EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+				EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM,
+			)
+		} catch (e: Exception) {
+			e.printStackTraceDebug()
+			context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+		}
+
+		private fun migrateLegacyPreferences(context: Context) {
+			val legacy = context.getSharedPreferences("${PREFS_NAME}_legacy", Context.MODE_PRIVATE)
+			val plain = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+			val source = when {
+				plain.all.isNotEmpty() -> plain
+				else -> return
+			}
+			try {
+				val secure = createSecurePreferences(context)
+				if (secure === source) {
+					return
+				}
+				secure.edit(commit = true) {
+					for ((key, value) in source.all) {
+						if (value is String && !secure.contains(key)) {
+							putString(key, value)
+						}
+					}
+				}
+				legacy.edit(commit = true) {
+					for ((key, value) in source.all) {
+						if (value is String) {
+							putString(key, value)
+						}
+					}
+				}
+				source.edit(commit = true) { clear() }
+			} catch (e: Exception) {
+				e.printStackTraceDebug()
 			}
 		}
 	}

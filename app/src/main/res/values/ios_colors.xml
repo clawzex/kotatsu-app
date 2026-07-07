@@ -13,6 +13,7 @@
 	<color name="ios_frosted_dark">#CC1C1C1E</color>
 	<color name="ios_frosted_amoled">#CC000000</color>
 	<color name="ios_tab_bar_shadow">#1A000000</color>
+	<color name="ios_tab_bar_frosted">@color/ios_frosted_light</color>
 	<color name="ios_search_field_bg">#1F767680</color>
 	<color name="ios_search_field_bg_dark">#3A767680</color>
 	<color name="ios_card_shadow">#14000000</color>

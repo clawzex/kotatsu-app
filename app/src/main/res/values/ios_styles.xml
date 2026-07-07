@@ -4,29 +4,36 @@
 	<!-- Floating bottom navigation -->
 	<style name="Widget.Kotatsu.iOS.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
 		<item name="android:background">@drawable/bg_ios_floating_tab_bar</item>
+		<item name="backgroundTint">@null</item>
 		<item name="android:elevation">@dimen/ios_floating_nav_elevation</item>
 		<item name="elevation">@dimen/ios_floating_nav_elevation</item>
-		<item name="itemIconSize">24dp</item>
+		<item name="itemIconSize">26dp</item>
 		<item name="itemActiveIndicatorStyle">@style/Widget.Kotatsu.iOS.NavActiveIndicator</item>
 		<item name="itemRippleColor">@android:color/transparent</item>
+		<item name="itemIconTint">@color/ios_nav_item_color</item>
+		<item name="itemTextColor">@color/ios_nav_item_color</item>
 		<item name="labelVisibilityMode">labeled</item>
 		<item name="itemTextAppearanceActive">@style/TextAppearance.Kotatsu.iOS.NavLabel.Active</item>
 		<item name="itemTextAppearanceInactive">@style/TextAppearance.Kotatsu.iOS.NavLabel.Inactive</item>
-		<item name="itemPaddingTop">8dp</item>
-		<item name="itemPaddingBottom">8dp</item>
-		<item name="android:minHeight">56dp</item>
+		<item name="itemPaddingTop">6dp</item>
+		<item name="itemPaddingBottom">6dp</item>
+		<item name="android:minHeight">62dp</item>
+		<item name="android:paddingTop">4dp</item>
+		<item name="android:paddingBottom">4dp</item>
 	</style>
 
 	<style name="Widget.Kotatsu.iOS.NavActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
 		<item name="android:color">?colorPrimaryContainer</item>
 		<item name="shapeAppearance">@style/ShapeAppearance.Kotatsu.iOS.Pill</item>
-		<item name="android:width">56dp</item>
-		<item name="android:height">32dp</item>
+		<item name="android:width">64dp</item>
+		<item name="android:height">36dp</item>
+		<item name="marginHorizontal">4dp</item>
 	</style>
 
 	<style name="TextAppearance.Kotatsu.iOS.NavLabel.Active" parent="TextAppearance.Material3.LabelMedium">
 		<item name="android:textSize">10sp</item>
 		<item name="android:fontFamily">sans-serif-medium</item>
+		<item name="android:textColor">?colorPrimary</item>
 	</style>
 
 	<style name="TextAppearance.Kotatsu.iOS.NavLabel.Inactive" parent="TextAppearance.Material3.LabelMedium">
@@ -52,6 +59,20 @@
 		<item name="android:minHeight">@dimen/ios_settings_row_min_height</item>
 		<item name="android:paddingStart">@dimen/ios_spacing_lg</item>
 		<item name="android:paddingEnd">@dimen/ios_spacing_lg</item>
+	</style>
+
+	<style name="Widget.Kotatsu.iOS.FloatingIconButton" parent="">
+		<item name="android:layout_width">@dimen/ios_floating_button_size</item>
+		<item name="android:layout_height">@dimen/ios_floating_button_size</item>
+		<item name="android:background">@drawable/bg_ios_floating_button</item>
+		<item name="android:scaleType">centerInside</item>
+		<item name="android:padding">8dp</item>
+		<item name="tint">@android:color/white</item>
+	</style>
+
+	<style name="Widget.Kotatsu.iOS.DetailGlassCard" parent="">
+		<item name="android:background">@drawable/bg_ios_glass_card</item>
+		<item name="android:elevation">@dimen/ios_card_elevation</item>
 	</style>
 
 	<!-- iOS chips -->

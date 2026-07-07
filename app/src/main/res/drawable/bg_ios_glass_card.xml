@@ -2,18 +2,18 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 	<item>
 		<shape android:shape="rectangle">
-			<corners android:radius="@dimen/ios_radius_pill" />
-			<solid android:color="@color/ios_tab_bar_shadow" />
+			<corners android:radius="@dimen/ios_radius_xl" />
+			<solid android:color="@color/ios_card_shadow" />
 		</shape>
 	</item>
 	<item
-		android:bottom="1dp"
+		android:bottom="2dp"
 		android:left="0dp"
 		android:right="0dp"
 		android:top="0dp">
 		<shape android:shape="rectangle">
-			<corners android:radius="@dimen/ios_radius_pill" />
-			<solid android:color="@color/ios_tab_bar_frosted" />
+			<corners android:radius="@dimen/ios_radius_xl" />
+			<solid android:color="?colorSurfaceContainerHigh" />
 			<stroke
 				android:width="0.5dp"
 				android:color="@color/ios_separator" />
