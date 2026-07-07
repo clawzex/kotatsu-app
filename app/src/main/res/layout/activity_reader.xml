@@ -80,8 +80,12 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_gravity="bottom"
+		android:layout_marginHorizontal="@dimen/ios_spacing_lg"
+		android:layout_marginBottom="@dimen/ios_spacing_lg"
 		android:fitsSystemWindows="false"
-		app:cardBackgroundColor="?colorSurfaceContainer"
+		app:cardBackgroundColor="?colorSurfaceContainerHigh"
+		app:cardCornerRadius="@dimen/ios_radius_xl"
+		app:cardElevation="@dimen/ios_card_elevation"
 		app:layout_insetEdge="bottom">
 
 		<org.koitharu.kotatsu.reader.ui.ReaderActionsView

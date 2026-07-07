@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!-- iOS-inspired spacing & radii -->
+	<dimen name="ios_radius_small">12dp</dimen>
+	<dimen name="ios_radius_medium">16dp</dimen>
+	<dimen name="ios_radius_large">20dp</dimen>
+	<dimen name="ios_radius_xl">24dp</dimen>
+	<dimen name="ios_radius_pill">28dp</dimen>
+
+	<dimen name="ios_spacing_xs">4dp</dimen>
+	<dimen name="ios_spacing_sm">8dp</dimen>
+	<dimen name="ios_spacing_md">12dp</dimen>
+	<dimen name="ios_spacing_lg">16dp</dimen>
+	<dimen name="ios_spacing_xl">20dp</dimen>
+	<dimen name="ios_spacing_xxl">24dp</dimen>
+	<dimen name="ios_spacing_section">32dp</dimen>
+
+	<dimen name="ios_floating_nav_margin_h">16dp</dimen>
+	<dimen name="ios_floating_nav_margin_bottom">12dp</dimen>
+	<dimen name="ios_floating_nav_elevation">16dp</dimen>
+	<dimen name="ios_floating_search_margin_h">16dp</dimen>
+	<dimen name="ios_floating_search_margin_top">8dp</dimen>
+	<dimen name="ios_card_elevation">4dp</dimen>
+
+	<dimen name="ios_large_title_size">34sp</dimen>
+	<dimen name="ios_title1_size">28sp</dimen>
+	<dimen name="ios_title2_size">22sp</dimen>
+	<dimen name="ios_title3_size">20sp</dimen>
+	<dimen name="ios_body_size">17sp</dimen>
+	<dimen name="ios_callout_size">16sp</dimen>
+	<dimen name="ios_subhead_size">15sp</dimen>
+	<dimen name="ios_footnote_size">13sp</dimen>
+	<dimen name="ios_caption_size">12sp</dimen>
+
+	<dimen name="ios_cover_corner">16dp</dimen>
+	<dimen name="ios_cover_corner_medium">12dp</dimen>
+	<dimen name="ios_cover_corner_small">8dp</dimen>
+	<dimen name="ios_hero_cover_width">140dp</dimen>
+	<dimen name="ios_grid_item_padding">8dp</dimen>
+	<dimen name="ios_settings_row_min_height">56dp</dimen>
+	<dimen name="ios_settings_icon_size">28dp</dimen>
+	<dimen name="ios_settings_section_inset">20dp</dimen>
+</resources>

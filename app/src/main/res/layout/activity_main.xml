@@ -5,6 +5,7 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
+	android:clipToPadding="false"
 	tools:context=".main.ui.MainActivity">
 
 	<androidx.fragment.app.FragmentContainerView
@@ -39,6 +40,8 @@
 			android:id="@+id/search_bar"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
+			android:layout_marginHorizontal="@dimen/ios_floating_search_margin_h"
+			android:layout_marginTop="@dimen/ios_floating_search_margin_top"
 			android:hint="@string/search_manga"
 			app:forceDefaultNavigationOnClickListener="true"
 			app:layout_scrollFlags="scroll|enterAlways|snap" />
@@ -58,6 +61,7 @@
 			android:layout_height="match_parent"
 			android:clipToPadding="false"
 			android:orientation="vertical"
+			android:paddingHorizontal="@dimen/ios_spacing_lg"
 			android:scrollbars="vertical"
 			app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
@@ -65,9 +69,10 @@
 
 	<com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 		android:id="@+id/fab"
+		style="@style/Widget.Kotatsu.iOS.ExtendedFAB"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_marginHorizontal="16dp"
+		android:layout_marginHorizontal="@dimen/ios_spacing_lg"
 		android:text="@string/_continue"
 		android:visibility="gone"
 		app:icon="@drawable/ic_read"
@@ -84,6 +89,10 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_gravity="bottom"
-		android:fitsSystemWindows="false" />
+		android:layout_marginHorizontal="@dimen/ios_floating_nav_margin_h"
+		android:layout_marginBottom="@dimen/ios_floating_nav_margin_bottom"
+		android:clipToPadding="false"
+		android:fitsSystemWindows="false"
+		app:elevation="@dimen/ios_floating_nav_elevation" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

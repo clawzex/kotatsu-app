@@ -7,42 +7,41 @@
 	android:layout_height="match_parent"
 	android:gravity="center"
 	android:orientation="vertical"
-	android:paddingHorizontal="32dp"
-	android:paddingBottom="?actionBarSize">
+	android:paddingHorizontal="@dimen/ios_spacing_xxl">
 
 	<org.koitharu.kotatsu.core.image.CoilImageView
 		android:id="@+id/icon"
-		android:layout_width="192dp"
-		android:layout_height="192dp"
+		android:layout_width="160dp"
+		android:layout_height="160dp"
 		android:contentDescription="@null"
 		android:scaleType="fitCenter"
-		app:crossfadeEnabled="false"
+		app:crossfadeEnabled="true"
 		tools:src="@drawable/ic_empty_favourites" />
 
 	<TextView
 		android:id="@+id/textPrimary"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_marginTop="@dimen/margin_normal"
+		android:layout_marginTop="@dimen/ios_spacing_xl"
 		android:gravity="center"
-		android:textAppearance="?attr/textAppearanceTitleLarge"
+		android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Title2"
 		tools:text="@tools:sample/lorem[3]" />
 
 	<TextView
 		android:id="@+id/textSecondary"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_marginTop="@dimen/margin_normal"
+		android:layout_marginTop="@dimen/ios_spacing_md"
 		android:gravity="center"
-		android:textAppearance="?attr/textAppearanceBodyMedium"
+		android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Subhead"
 		tools:text="@tools:sample/lorem[15]" />
 
 	<Button
 		android:id="@+id/button_retry"
-		style="?materialButtonTonalStyle"
+		style="@style/Widget.Kotatsu.iOS.Button.Tonal"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_marginTop="@dimen/margin_normal"
+		android:layout_marginTop="@dimen/ios_spacing_xl"
 		android:visibility="gone"
 		tools:text="@string/try_again"
 		tools:visibility="visible" />

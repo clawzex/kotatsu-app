@@ -67,7 +67,7 @@
 					android:layout_height="wrap_content"
 					android:layout_gravity="center_vertical|start"
 					android:paddingStart="@dimen/screen_padding"
-					android:textAppearance="?textAppearanceTitleLarge"
+					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.LargeTitle"
 					tools:ignore="RtlSymmetry"
 					tools:text="@string/history" />
 
@@ -76,6 +76,7 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_gravity="center_vertical|end"
+					android:layout_marginHorizontal="@dimen/ios_floating_search_margin_h"
 					android:hint="@string/search_manga"
 					app:adaptiveMaxWidthEnabled="true"
 					app:forceDefaultNavigationOnClickListener="true" />

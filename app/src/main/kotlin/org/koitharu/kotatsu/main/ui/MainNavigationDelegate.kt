@@ -19,7 +19,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigationrail.NavigationRailView
-import com.google.android.material.transition.MaterialFadeThrough
+import com.google.android.material.transition.MaterialFade
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.callbackFlow
@@ -222,7 +222,9 @@ class MainNavigationDelegate(
 		val args = buildBundle(1) {
 			putBoolean(AppRouter.KEY_IS_BOTTOMTAB, true)
 		}
-		fragment.enterTransition = MaterialFadeThrough()
+		fragment.enterTransition = MaterialFade().apply {
+			duration = 300
+		}
 		fragmentManager.beginTransaction()
 			.setReorderingAllowed(true)
 			.replace(R.id.container, fragmentClass, args, TAG_PRIMARY)

@@ -5,9 +5,11 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:background="@drawable/list_selector"
-	android:paddingVertical="4dp"
-	android:paddingStart="?android:listPreferredItemPaddingStart"
+	android:layout_marginHorizontal="@dimen/ios_spacing_sm"
+	android:layout_marginVertical="@dimen/ios_spacing_xs"
+	android:background="@drawable/bg_ios_grouped_card"
+	android:paddingVertical="@dimen/ios_spacing_md"
+	android:paddingStart="@dimen/ios_spacing_lg"
 	tools:ignore="RtlSymmetry">
 
 	<org.koitharu.kotatsu.image.ui.CoverStackView
@@ -28,7 +30,7 @@
 		android:layout_marginEnd="?listPreferredItemPaddingEnd"
 		android:ellipsize="end"
 		android:singleLine="true"
-		android:textAppearance="?attr/textAppearanceBodyLarge"
+		android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Body"
 		app:layout_constraintBottom_toTopOf="@id/textView_subtitle"
 		app:layout_constraintEnd_toStartOf="@id/imageView_edit"
 		app:layout_constraintStart_toEndOf="@id/coversView"

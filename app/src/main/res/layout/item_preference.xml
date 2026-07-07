@@ -4,28 +4,27 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:background="?selectableItemBackground"
+	android:background="@drawable/bg_ios_grouped_card"
 	android:clipToPadding="false"
 	android:gravity="center_vertical"
-	android:minHeight="?android:attr/listPreferredItemHeight"
+	android:minHeight="@dimen/ios_settings_row_min_height"
 	android:orientation="vertical"
-	android:padding="4dp"
-	android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-	android:paddingEnd="?android:attr/listPreferredItemPaddingEnd">
+	android:paddingHorizontal="@dimen/ios_spacing_lg"
+	android:paddingVertical="@dimen/ios_spacing_md">
 
 	<TextView
 		android:id="@+id/textView_title"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:textAppearance="?android:attr/textAppearanceListItem"
+		android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Body"
 		tools:text="@string/too_many_requests_message" />
 
 	<TextView
 		android:id="@+id/textView_summary"
-		style="@style/PreferenceSummaryTextStyle"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_marginTop="2dp"
+		android:layout_marginTop="@dimen/ios_spacing_xs"
+		android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Subhead"
 		tools:text="@string/tap_to_try_again" />
 
 </LinearLayout>

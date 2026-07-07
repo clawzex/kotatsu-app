@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pathInterpolator
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:controlX1="0.175"
+	android:controlY1="0.885"
+	android:controlX2="0.32"
+	android:controlY2="1.275"
+	android:pathData="M 0,0 C 0.175,0.885 0.32,1.275 1,1" />

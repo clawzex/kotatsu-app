@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+	<!-- Floating bottom navigation -->
+	<style name="Widget.Kotatsu.iOS.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
+		<item name="android:background">@drawable/bg_ios_floating_tab_bar</item>
+		<item name="android:elevation">@dimen/ios_floating_nav_elevation</item>
+		<item name="elevation">@dimen/ios_floating_nav_elevation</item>
+		<item name="itemIconSize">24dp</item>
+		<item name="itemActiveIndicatorStyle">@style/Widget.Kotatsu.iOS.NavActiveIndicator</item>
+		<item name="itemRippleColor">@android:color/transparent</item>
+		<item name="labelVisibilityMode">labeled</item>
+		<item name="itemTextAppearanceActive">@style/TextAppearance.Kotatsu.iOS.NavLabel.Active</item>
+		<item name="itemTextAppearanceInactive">@style/TextAppearance.Kotatsu.iOS.NavLabel.Inactive</item>
+		<item name="itemPaddingTop">8dp</item>
+		<item name="itemPaddingBottom">8dp</item>
+		<item name="android:minHeight">56dp</item>
+	</style>
+
+	<style name="Widget.Kotatsu.iOS.NavActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+		<item name="android:color">?colorPrimaryContainer</item>
+		<item name="shapeAppearance">@style/ShapeAppearance.Kotatsu.iOS.Pill</item>
+		<item name="android:width">56dp</item>
+		<item name="android:height">32dp</item>
+	</style>
+
+	<style name="TextAppearance.Kotatsu.iOS.NavLabel.Active" parent="TextAppearance.Material3.LabelMedium">
+		<item name="android:textSize">10sp</item>
+		<item name="android:fontFamily">sans-serif-medium</item>
+	</style>
+
+	<style name="TextAppearance.Kotatsu.iOS.NavLabel.Inactive" parent="TextAppearance.Material3.LabelMedium">
+		<item name="android:textSize">10sp</item>
+		<item name="android:textColor">@color/ios_label_secondary</item>
+	</style>
+
+	<!-- Floating search bar -->
+	<style name="Widget.Kotatsu.iOS.SearchBar" parent="Widget.Material3.SearchBar">
+		<item name="android:background">@drawable/bg_ios_search_field</item>
+		<item name="android:elevation">0dp</item>
+		<item name="elevation">0dp</item>
+		<item name="android:layout_marginHorizontal">@dimen/ios_floating_search_margin_h</item>
+		<item name="android:layout_marginTop">@dimen/ios_floating_search_margin_top</item>
+		<item name="android:minHeight">44dp</item>
+		<item name="hintTextAppearance">@style/TextAppearance.Kotatsu.iOS.Subhead</item>
+		<item name="android:textAppearance">@style/TextAppearance.Kotatsu.iOS.Body</item>
+	</style>
+
+	<!-- iOS grouped settings -->
+	<style name="Widget.Kotatsu.iOS.Preference" parent="">
+		<item name="android:background">@drawable/bg_ios_grouped_card</item>
+		<item name="android:minHeight">@dimen/ios_settings_row_min_height</item>
+		<item name="android:paddingStart">@dimen/ios_spacing_lg</item>
+		<item name="android:paddingEnd">@dimen/ios_spacing_lg</item>
+	</style>
+
+	<!-- iOS chips -->
+	<style name="Widget.Kotatsu.iOS.Chip" parent="Widget.Material3.Chip.Assist">
+		<item name="chipCornerRadius">@dimen/ios_radius_pill</item>
+		<item name="chipMinHeight">32dp</item>
+		<item name="android:textAppearance">@style/TextAppearance.Kotatsu.iOS.Callout</item>
+		<item name="chipBackgroundColor">?colorSurfaceContainerHigh</item>
+	</style>
+
+	<style name="Widget.Kotatsu.iOS.Chip.Filter" parent="Widget.Material3.Chip.Filter">
+		<item name="chipCornerRadius">@dimen/ios_radius_pill</item>
+		<item name="chipMinHeight">32dp</item>
+	</style>
+
+	<!-- iOS buttons -->
+	<style name="Widget.Kotatsu.iOS.Button.Filled" parent="Widget.Material3.Button">
+		<item name="cornerRadius">@dimen/ios_radius_medium</item>
+		<item name="android:minHeight">50dp</item>
+		<item name="android:textAppearance">@style/TextAppearance.Kotatsu.iOS.Body</item>
+		<item name="android:fontFamily">sans-serif-medium</item>
+	</style>
+
+	<style name="Widget.Kotatsu.iOS.Button.Tonal" parent="Widget.Material3.Button.TonalButton">
+		<item name="cornerRadius">@dimen/ios_radius_medium</item>
+		<item name="android:minHeight">50dp</item>
+	</style>
+
+	<style name="Widget.Kotatsu.iOS.FAB" parent="Widget.Material3.FloatingActionButton.Primary">
+		<item name="shapeAppearance">@style/ShapeAppearance.Kotatsu.iOS.Circle</item>
+		<item name="elevation">8dp</item>
+		<item name="android:elevation">8dp</item>
+	</style>
+
+	<style name="Widget.Kotatsu.iOS.ExtendedFAB" parent="Widget.Material3.ExtendedFloatingActionButton.Primary">
+		<item name="shapeAppearance">@style/ShapeAppearance.Kotatsu.iOS.Pill</item>
+		<item name="android:minHeight">50dp</item>
+		<item name="elevation">8dp</item>
+	</style>
+
+	<!-- Bottom sheet iOS style -->
+	<style name="Widget.Kotatsu.iOS.BottomSheet" parent="Widget.Material3.BottomSheet.Modal">
+		<item name="shapeAppearance">@style/ShapeAppearance.Kotatsu.iOS.BottomSheet</item>
+		<item name="backgroundTint">?colorSurfaceContainerLowest</item>
+	</style>
+
+	<!-- Shapes -->
+	<style name="ShapeAppearance.Kotatsu.iOS.Pill" parent="">
+		<item name="cornerFamily">rounded</item>
+		<item name="cornerSize">50%</item>
+	</style>
+
+	<style name="ShapeAppearance.Kotatsu.iOS.Circle" parent="">
+		<item name="cornerFamily">rounded</item>
+		<item name="cornerSize">50%</item>
+	</style>
+
+	<style name="ShapeAppearance.Kotatsu.iOS.BottomSheet" parent="">
+		<item name="cornerFamily">rounded</item>
+		<item name="cornerSizeTopLeft">@dimen/ios_radius_xl</item>
+		<item name="cornerSizeTopRight">@dimen/ios_radius_xl</item>
+		<item name="cornerSizeBottomLeft">0dp</item>
+		<item name="cornerSizeBottomRight">0dp</item>
+	</style>
+
+	<style name="ShapeAppearance.Kotatsu.iOS.Card" parent="">
+		<item name="cornerFamily">rounded</item>
+		<item name="cornerSize">@dimen/ios_radius_large</item>
+	</style>
+
+</resources>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!-- iOS semantic colors (light) -->
+	<color name="ios_system_blue">#007AFF</color>
+	<color name="ios_system_blue_dark">#0A84FF</color>
+	<color name="ios_grouped_background">#F2F2F7</color>
+	<color name="ios_secondary_grouped">#FFFFFF</color>
+	<color name="ios_label_primary">#000000</color>
+	<color name="ios_label_secondary">#993C3C43</color>
+	<color name="ios_label_tertiary">#4D3C3C43</color>
+	<color name="ios_separator">#33000000</color>
+	<color name="ios_frosted_light">#E6FFFFFF</color>
+	<color name="ios_frosted_dark">#CC1C1C1E</color>
+	<color name="ios_frosted_amoled">#CC000000</color>
+	<color name="ios_tab_bar_shadow">#1A000000</color>
+	<color name="ios_search_field_bg">#1F767680</color>
+	<color name="ios_search_field_bg_dark">#3A767680</color>
+	<color name="ios_card_shadow">#14000000</color>
+</resources>

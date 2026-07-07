@@ -15,7 +15,7 @@
 
 	<style name="ThemeOverlay.Kotatsu.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
 		<item name="android:windowAnimationStyle">@style/Animation.Kotatsu.BottomSheetDialog</item>
-		<item name="bottomSheetStyle">@style/Widget.Kotatsu.BottomSheet.Modal</item>
+		<item name="bottomSheetStyle">@style/Widget.Kotatsu.iOS.BottomSheet</item>
 	</style>
 
 	<style name="ThemeOverlay.Kotatsu.SideSheetDialog" parent="ThemeOverlay.Material3.SideSheetDialog" />
@@ -58,11 +58,11 @@
 		<item name="trackCornerRadius">@dimen/mtrl_progress_indicator_full_rounded_corner_radius</item>
 	</style>
 
-	<style name="Widget.Kotatsu.Chip" parent="Widget.Material3.Chip.Suggestion" />
+	<style name="Widget.Kotatsu.Chip" parent="Widget.Kotatsu.iOS.Chip" />
 
-	<style name="Widget.Kotatsu.Chip.Filter" parent="Widget.Material3.Chip.Filter" />
+	<style name="Widget.Kotatsu.Chip.Filter" parent="Widget.Kotatsu.iOS.Chip.Filter" />
 
-	<style name="Widget.Kotatsu.Chip.Assist" parent="Widget.Material3.Chip.Assist" />
+	<style name="Widget.Kotatsu.Chip.Assist" parent="Widget.Kotatsu.iOS.Chip" />
 
 	<style name="Widget.Kotatsu.Chip.Dropdown" parent="Widget.Material3.Chip.Assist">
 		<item name="closeIconVisible">true</item>
@@ -167,7 +167,7 @@
 	<style name="Widget.Kotatsu.ExploreButton" parent="Widget.Material3.Button.ElevatedButton.Icon">
 		<item name="android:minHeight">56dp</item>
 		<item name="android:singleLine">true</item>
-		<item name="shapeAppearance">?shapeAppearanceCornerExtraLarge</item>
+		<item name="shapeAppearance">@style/ShapeAppearance.Kotatsu.iOS.Card</item>
 		<item name="android:ellipsize">marquee</item>
 		<item name="android:marqueeRepeatLimit">marquee_forever</item>
 		<item name="iconSize">22dp</item>
@@ -243,15 +243,15 @@
 	<!-- Shapes -->
 
 	<style name="ShapeAppearanceOverlay.Kotatsu.Cover" parent="">
-		<item name="cornerSize">12dp</item>
+		<item name="cornerSize">@dimen/ios_cover_corner</item>
 	</style>
 
 	<style name="ShapeAppearanceOverlay.Kotatsu.Cover.Medium" parent="">
-		<item name="cornerSize">8dp</item>
+		<item name="cornerSize">@dimen/ios_cover_corner_medium</item>
 	</style>
 
 	<style name="ShapeAppearanceOverlay.Kotatsu.Cover.Small" parent="">
-		<item name="cornerSize">4dp</item>
+		<item name="cornerSize">@dimen/ios_cover_corner_small</item>
 	</style>
 
 	<style name="ShapeAppearanceOverlay.Kotatsu.Circle" parent="">

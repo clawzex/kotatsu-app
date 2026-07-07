@@ -5,7 +5,9 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:background="@drawable/custom_selectable_item_background">
+	android:layout_margin="@dimen/ios_grid_item_padding"
+	android:background="@drawable/bg_ios_card_elevated"
+	android:padding="@dimen/ios_spacing_md">
 
 	<androidx.constraintlayout.widget.ConstraintLayout
 		android:layout_width="match_parent"

@@ -15,10 +15,10 @@ import androidx.annotation.StyleRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.isVisible
 import androidx.customview.view.AbsSavedState
-import androidx.interpolator.view.animation.FastOutLinearInInterpolator
-import androidx.interpolator.view.animation.LinearOutSlowInInterpolator
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.navigation.NavigationBarView
+import org.koitharu.kotatsu.R
+import org.koitharu.kotatsu.core.ui.util.IosUiHelper
 import org.koitharu.kotatsu.core.util.ext.applySystemAnimatorScale
 import org.koitharu.kotatsu.core.util.ext.measureHeight
 import kotlin.math.max
@@ -27,8 +27,8 @@ import com.google.android.material.R as materialR
 private const val STATE_DOWN = 1
 private const val STATE_UP = 2
 
-private const val SLIDE_UP_ANIMATION_DURATION = 225L
-private const val SLIDE_DOWN_ANIMATION_DURATION = 175L
+private const val SLIDE_UP_ANIMATION_DURATION = 350L
+private const val SLIDE_DOWN_ANIMATION_DURATION = 280L
 
 private const val MAX_ITEM_COUNT = 6
 
@@ -53,6 +53,19 @@ class SlidingBottomNavigationView @JvmOverloads constructor(
 				translationX = 0f
 			}
 		}
+
+	init {
+		clipToOutline = true
+		elevation = resources.getDimension(R.dimen.ios_floating_nav_elevation)
+		outlineProvider = background?.let { android.view.ViewOutlineProvider.BACKGROUND }
+			?: android.view.ViewOutlineProvider.BACKGROUND
+	}
+
+	override fun onFinishInflate() {
+		super.onFinishInflate()
+		@SuppressLint("RestrictedApi")
+		(getChildAt(0) as? BottomNavigationMenuView)?.isItemHorizontalTranslationEnabled = false
+	}
 
 	val isShownOrShowing: Boolean
 		get() = isVisible && currentState == STATE_UP
@@ -142,7 +155,7 @@ class SlidingBottomNavigationView @JvmOverloads constructor(
 		animateTranslation(
 			0F,
 			SLIDE_UP_ANIMATION_DURATION,
-			LinearOutSlowInInterpolator(),
+			IosUiHelper.springInterpolator,
 		)
 	}
 
@@ -161,7 +174,7 @@ class SlidingBottomNavigationView @JvmOverloads constructor(
 		animateTranslation(
 			target.toFloat(),
 			SLIDE_DOWN_ANIMATION_DURATION,
-			FastOutLinearInInterpolator(),
+			IosUiHelper.easeOutInterpolator,
 		)
 	}
 

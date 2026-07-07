@@ -2,30 +2,30 @@
 <resources>
 
 	<!-- Common dimensions -->
-	<dimen name="margin_normal">16dp</dimen>
-	<dimen name="margin_small">8dp</dimen>
+	<dimen name="margin_normal">20dp</dimen>
+	<dimen name="margin_small">10dp</dimen>
 	<!-- List spacing -->
-	<dimen name="list_spacing_small">6dp</dimen>
-	<dimen name="list_spacing_normal">8dp</dimen>
-	<dimen name="list_spacing_large">12dp</dimen>
+	<dimen name="list_spacing_small">8dp</dimen>
+	<dimen name="list_spacing_normal">12dp</dimen>
+	<dimen name="list_spacing_large">16dp</dimen>
 	<!-- Navigation -->
 	<dimen name="nav_bar_height_compact">0dp</dimen>
 
-	<dimen name="grid_spacing">8dp</dimen>
-	<dimen name="list_spacing">8dp</dimen>
-	<dimen name="grid_spacing_outer">2dp</dimen>
-	<dimen name="grid_spacing_outer_double">4dp</dimen>
+	<dimen name="grid_spacing">10dp</dimen>
+	<dimen name="list_spacing">12dp</dimen>
+	<dimen name="grid_spacing_outer">4dp</dimen>
+	<dimen name="grid_spacing_outer_double">8dp</dimen>
 	<dimen name="manga_list_details_item_height">120dp</dimen>
-	<dimen name="recommendation_item_height">90dp</dimen>
+	<dimen name="recommendation_item_height">120dp</dimen>
 	<dimen name="bookmark_item_height">120dp</dimen>
 	<dimen name="chapter_list_item_height">48dp</dimen>
 	<dimen name="preferred_grid_width">120dp</dimen>
 	<dimen name="small_grid_width">92dp</dimen>
 	<dimen name="smaller_grid_width">102dp</dimen>
 	<dimen name="list_footer_height_outer">48dp</dimen>
-	<dimen name="screen_padding">16dp</dimen>
+	<dimen name="screen_padding">20dp</dimen>
 	<dimen name="selection_stroke_width">2dp</dimen>
-	<dimen name="list_selector_corner">12dp</dimen>
+	<dimen name="list_selector_corner">16dp</dimen>
 	<dimen name="toolbar_button_margin">10dp</dimen>
 	<dimen name="widget_cover_height">116dp</dimen>
 	<dimen name="widget_cover_width">84dp</dimen>
@@ -74,7 +74,7 @@
 	<dimen name="fastscroll_scrollbar_padding_end">6dp</dimen>
 
 	<dimen name="m3_side_sheet_width">400dp</dimen>
-	<dimen name="m3_card_corner">12dp</dimen>
+	<dimen name="m3_card_corner">20dp</dimen>
 
 	<dimen name="reader_scroll_delta_min">200dp</dimen>
 
