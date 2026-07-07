@@ -8,6 +8,7 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import android.view.animation.PathInterpolator
 import androidx.annotation.AnimRes
+import androidx.core.view.doOnDetach
 import androidx.core.view.doOnLayout
 import org.koitharu.kotatsu.R
 
@@ -39,95 +40,154 @@ object IosUiHelper {
 	}
 
 	fun View.playIosScaleIn() {
-		startAnimation(AnimationUtils.loadAnimation(context, R.anim.ios_scale_fade_in))
+		withAnimationCleanup {
+			startAnimation(AnimationUtils.loadAnimation(context, R.anim.ios_scale_fade_in))
+		}
 	}
 
 	fun View.playIosScaleOut(@AnimRes animRes: Int = R.anim.ios_scale_fade_out) {
-		startAnimation(AnimationUtils.loadAnimation(context, animRes))
+		withAnimationCleanup {
+			startAnimation(AnimationUtils.loadAnimation(context, animRes))
+		}
 	}
 
 	fun View.animateSpringShow(duration: Long = 350L) {
-		alpha = 0f
-		scaleX = 0.92f
-		scaleY = 0.92f
-		visibility = View.VISIBLE
-		animate()
-			.alpha(1f)
-			.scaleX(1f)
-			.scaleY(1f)
-			.setDuration(duration)
-			.setInterpolator(springInterpolator)
-			.start()
+		withAnimationCleanup {
+			alpha = 0f
+			scaleX = 0.92f
+			scaleY = 0.92f
+			visibility = View.VISIBLE
+			animate()
+				.alpha(1f)
+				.scaleX(1f)
+				.scaleY(1f)
+				.setDuration(duration)
+				.setInterpolator(springInterpolator)
+				.setListener(null)
+				.start()
+		}
 	}
 
 	fun View.animateSpringHide(duration: Long = 250L, onEnd: (() -> Unit)? = null) {
-		animate()
-			.alpha(0f)
-			.scaleX(0.95f)
-			.scaleY(0.95f)
-			.setDuration(duration)
-			.setInterpolator(easeOutInterpolator)
-			.withEndAction {
-				visibility = View.GONE
-				alpha = 1f
-				scaleX = 1f
-				scaleY = 1f
-				onEnd?.invoke()
-			}
-			.start()
+		withAnimationCleanup {
+			animate()
+				.alpha(0f)
+				.scaleX(0.95f)
+				.scaleY(0.95f)
+				.setDuration(duration)
+				.setInterpolator(easeOutInterpolator)
+				.withEndAction {
+					if (!isAttachedToWindow) {
+						return@withEndAction
+					}
+					visibility = View.GONE
+					resetIosAnimationState()
+					onEnd?.invoke()
+				}
+				.start()
+		}
 	}
 
 	fun View.animatePress(scale: Float = 0.96f) {
-		animate()
-			.scaleX(scale)
-			.scaleY(scale)
-			.setDuration(100)
-			.setInterpolator(easeOutInterpolator)
-			.start()
+		withAnimationCleanup {
+			animate()
+				.scaleX(scale)
+				.scaleY(scale)
+				.setDuration(100)
+				.setInterpolator(easeOutInterpolator)
+				.setListener(null)
+				.start()
+		}
 	}
 
 	fun View.animateRelease() {
-		animate()
-			.scaleX(1f)
-			.scaleY(1f)
-			.setDuration(200)
-			.setInterpolator(springInterpolator)
-			.start()
+		withAnimationCleanup {
+			animate()
+				.scaleX(1f)
+				.scaleY(1f)
+				.setDuration(200)
+				.setInterpolator(springInterpolator)
+				.setListener(null)
+				.start()
+		}
 	}
 
 	fun View.setupPressAnimation() {
 		isClickable = true
-		setOnTouchListener { v, event ->
-			when (event.actionMasked) {
-				android.view.MotionEvent.ACTION_DOWN -> v.animatePress()
-				android.view.MotionEvent.ACTION_UP,
-				android.view.MotionEvent.ACTION_CANCEL,
-				-> v.animateRelease()
+		withAnimationCleanup {
+			setOnTouchListener { v, event ->
+				when (event.actionMasked) {
+					android.view.MotionEvent.ACTION_DOWN -> v.animatePress()
+					android.view.MotionEvent.ACTION_UP,
+					android.view.MotionEvent.ACTION_CANCEL,
+					-> v.animateRelease()
+				}
+				false
 			}
-			false
 		}
 	}
 
 	fun View.crossfadeWith(other: View, duration: Long = 300L) {
-		other.alpha = 0f
-		other.visibility = View.VISIBLE
-		animate().alpha(0f).setDuration(duration).withEndAction {
-			visibility = View.GONE
-		}.start()
-		other.animate().alpha(1f).setDuration(duration).start()
+		withAnimationCleanup {
+			other.withAnimationCleanup {
+				other.alpha = 0f
+				other.visibility = View.VISIBLE
+				animate().alpha(0f).setDuration(duration).withEndAction {
+					if (isAttachedToWindow) {
+						visibility = View.GONE
+					}
+				}.start()
+				other.animate().alpha(1f).setDuration(duration).setListener(null).start()
+			}
+		}
 	}
 
 	fun View.doOnLayoutSpring(action: (View) -> Unit) {
 		doOnLayout { view ->
-			view.alpha = 0f
-			view.translationY = 24f
-			action(view)
-			view.animate()
-				.alpha(1f)
-				.translationY(0f)
-				.setDuration(400)
-				.setInterpolator(springInterpolator)
-				.start()
+			view.withAnimationCleanup {
+				view.alpha = 0f
+				view.translationY = 24f
+				action(view)
+				view.animate()
+					.alpha(1f)
+					.translationY(0f)
+					.setDuration(400)
+					.setInterpolator(springInterpolator)
+					.setListener(null)
+					.start()
+			}
 		}
+	}
+
+	/**
+	 * Cancels in-flight property animations and clears listeners that would retain this [View].
+	 */
+	fun View.cancelIosAnimations() {
+		clearAnimation()
+		animate().setListener(null)
+		animate().cancel()
+		resetIosAnimationState()
+		setOnTouchListener(null)
+	}
+
+	private fun View.withAnimationCleanup(block: View.() -> Unit) {
+		ensureAnimationCleanupOnDetach()
+		block()
+	}
+
+	private fun View.ensureAnimationCleanupOnDetach() {
+		if (getTag(R.id.ios_animation_cleanup) != true) {
+			setTag(R.id.ios_animation_cleanup, true)
+			doOnDetach {
+				setTag(R.id.ios_animation_cleanup, null)
+				cancelIosAnimations()
+			}
+		}
+	}
+
+	private fun View.resetIosAnimationState() {
+		alpha = 1f
+		scaleX = 1f
+		scaleY = 1f
 	}
 }

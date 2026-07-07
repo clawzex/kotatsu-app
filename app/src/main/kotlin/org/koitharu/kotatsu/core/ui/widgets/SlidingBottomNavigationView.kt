@@ -148,8 +148,7 @@ class SlidingBottomNavigationView @JvmOverloads constructor(
 		if (currentState == STATE_UP) {
 			return
 		}
-		currentAnimator?.cancel()
-		clearAnimation()
+		cancelSlideAnimation()
 
 		currentState = STATE_UP
 		animateTranslation(
@@ -163,8 +162,7 @@ class SlidingBottomNavigationView @JvmOverloads constructor(
 		if (currentState == STATE_DOWN) {
 			return
 		}
-		currentAnimator?.cancel()
-		clearAnimation()
+		cancelSlideAnimation()
 
 		currentState = STATE_DOWN
 		val target = measureHeight()
@@ -186,7 +184,20 @@ class SlidingBottomNavigationView @JvmOverloads constructor(
 		}
 	}
 
+	override fun onDetachedFromWindow() {
+		cancelSlideAnimation()
+		super.onDetachedFromWindow()
+	}
+
+	private fun cancelSlideAnimation() {
+		currentAnimator?.cancel()
+		currentAnimator = null
+		animate().setListener(null)
+		clearAnimation()
+	}
+
 	private fun animateTranslation(targetY: Float, duration: Long, interpolator: TimeInterpolator) {
+		cancelSlideAnimation()
 		currentAnimator = animate()
 			.translationY(targetY)
 			.setInterpolator(interpolator)
@@ -195,11 +206,20 @@ class SlidingBottomNavigationView @JvmOverloads constructor(
 			.setListener(
 				object : AnimatorListenerAdapter() {
 					override fun onAnimationEnd(animation: Animator) {
-						currentAnimator = null
+						clearSlideAnimationListener()
 						postInvalidate()
+					}
+
+					override fun onAnimationCancel(animation: Animator) {
+						clearSlideAnimationListener()
 					}
 				},
 			)
+	}
+
+	private fun clearSlideAnimationListener() {
+		currentAnimator = null
+		animate().setListener(null)
 	}
 
 	internal class SavedState : AbsSavedState {

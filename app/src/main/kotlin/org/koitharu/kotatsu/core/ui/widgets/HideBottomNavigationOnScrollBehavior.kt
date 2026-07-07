@@ -28,10 +28,9 @@ class HideBottomNavigationOnScrollBehavior @JvmOverloads constructor(
 	var isPinned: Boolean = false
 		set(value) {
 			field = value
-			if (value) {
-				offsetAnimator?.cancel()
-				offsetAnimator = null
-			}
+		if (value) {
+			cancelOffsetAnimation()
+		}
 		}
 
 	override fun layoutDependsOn(parent: CoordinatorLayout, child: NavigationBarView, dependency: View): Boolean {
@@ -64,7 +63,7 @@ class HideBottomNavigationOnScrollBehavior @JvmOverloads constructor(
 			return false
 		}
 		lastStartedType = type
-		offsetAnimator?.cancel()
+		cancelOffsetAnimation()
 		return true
 	}
 
@@ -94,19 +93,35 @@ class HideBottomNavigationOnScrollBehavior @JvmOverloads constructor(
 		}
 	}
 
+	override fun onDetachedFromLayoutParams() {
+		cancelOffsetAnimation()
+		super.onDetachedFromLayoutParams()
+	}
+
 	private fun animateBottomNavigationVisibility(child: NavigationBarView, isVisible: Boolean) {
-		offsetAnimator?.cancel()
-		offsetAnimator = ValueAnimator().apply {
+		cancelOffsetAnimation()
+		val animator = ValueAnimator().apply {
 			interpolator = DecelerateInterpolator()
 			duration = child.context.getAnimationDuration(R.integer.config_shorterAnimTime)
-			addUpdateListener {
-				child.translationY = it.animatedValue as Float
+			addUpdateListener { animation ->
+				if (child.isAttachedToWindow) {
+					child.translationY = animation.animatedValue as Float
+				} else {
+					animation.cancel()
+				}
 			}
 		}
-		offsetAnimator?.setFloatValues(
+		offsetAnimator = animator
+		animator.setFloatValues(
 			child.translationY,
 			if (isVisible) 0F else child.height.toFloat(),
 		)
-		offsetAnimator?.start()
+		animator.start()
+	}
+
+	private fun cancelOffsetAnimation() {
+		offsetAnimator?.removeAllUpdateListeners()
+		offsetAnimator?.cancel()
+		offsetAnimator = null
 	}
 }
