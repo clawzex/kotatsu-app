@@ -99,7 +99,7 @@ class PageLoader @Inject constructor(
 	val loaderScope = lifecycle.lifecycleScope + InternalErrorHandler() + Dispatchers.Default
 
 	private val tasks = LongSparseArray<ProgressDeferred<Uri, Float>>()
-	private val semaphore = Semaphore(5)
+	private val semaphore = Semaphore(8)
 	private val convertLock = Mutex()
 	private val prefetchLock = Mutex()
 
@@ -357,7 +357,7 @@ class PageLoader @Inject constructor(
 	companion object {
 
 		private const val PROGRESS_UNDEFINED = -1f
-		private const val PREFETCH_LIMIT_DEFAULT = 5
+		private const val PREFETCH_LIMIT_DEFAULT = 8
 		private const val PREFETCH_MIN_RAM_MB = 80L
 		private const val PAGE_DOWNLOAD_RETRIES = 3
 

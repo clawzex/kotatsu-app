@@ -72,8 +72,8 @@ interface NetworkModule {
 		): OkHttpClient = OkHttpClient.Builder().apply {
 			assertNotInMainThread()
 			dispatcher(Dispatcher().apply {
-				maxRequestsPerHost = 3
-				maxRequests = 6
+				maxRequestsPerHost = 4
+				maxRequests = 12
 			})
 			connectTimeout(15, TimeUnit.SECONDS)
 			readTimeout(45, TimeUnit.SECONDS)
