@@ -61,34 +61,39 @@
 		<item name="android:paddingEnd">@dimen/ios_spacing_lg</item>
 	</style>
 
+	<!-- Floating icon button — semi-transparent pill with frosted look -->
 	<style name="Widget.Kotatsu.iOS.FloatingIconButton" parent="">
 		<item name="android:layout_width">@dimen/ios_floating_button_size</item>
 		<item name="android:layout_height">@dimen/ios_floating_button_size</item>
 		<item name="android:background">@drawable/bg_ios_floating_button</item>
 		<item name="android:scaleType">centerInside</item>
-		<item name="android:padding">8dp</item>
+		<item name="android:padding">9dp</item>
 		<item name="tint">@android:color/white</item>
 	</style>
 
+	<!-- Detail glass card — frosted dark surface with subtle border -->
 	<style name="Widget.Kotatsu.iOS.DetailGlassCard" parent="">
 		<item name="android:background">@drawable/bg_ios_glass_card</item>
 		<item name="android:elevation">@dimen/ios_card_elevation</item>
 	</style>
 
-	<!-- iOS chips -->
+	<!-- iOS chips — frosted dark surface -->
 	<style name="Widget.Kotatsu.iOS.Chip" parent="Widget.Material3.Chip.Assist">
 		<item name="chipCornerRadius">@dimen/ios_radius_pill</item>
-		<item name="chipMinHeight">32dp</item>
+		<item name="chipMinHeight">34dp</item>
 		<item name="android:textAppearance">@style/TextAppearance.Kotatsu.iOS.Callout</item>
-		<item name="chipBackgroundColor">?colorSurfaceContainerHigh</item>
+		<item name="chipBackgroundColor">@color/ios_surface_frosted</item>
+		<item name="chipStrokeColor">@color/ios_border_card</item>
+		<item name="chipStrokeWidth">0.5dp</item>
+		<item name="chipIconTint">@color/ios_system_blue</item>
 	</style>
 
 	<style name="Widget.Kotatsu.iOS.Chip.Filter" parent="Widget.Material3.Chip.Filter">
 		<item name="chipCornerRadius">@dimen/ios_radius_pill</item>
-		<item name="chipMinHeight">32dp</item>
+		<item name="chipMinHeight">34dp</item>
 	</style>
 
-	<!-- iOS buttons -->
+	<!-- iOS buttons — modern rounded -->
 	<style name="Widget.Kotatsu.iOS.Button.Filled" parent="Widget.Material3.Button">
 		<item name="cornerRadius">@dimen/ios_radius_medium</item>
 		<item name="android:minHeight">50dp</item>
@@ -113,10 +118,10 @@
 		<item name="elevation">8dp</item>
 	</style>
 
-	<!-- Bottom sheet iOS style -->
+	<!-- Bottom sheet iOS style — smooth rounded top -->
 	<style name="Widget.Kotatsu.iOS.BottomSheet" parent="Widget.Material3.BottomSheet.Modal">
 		<item name="shapeAppearance">@style/ShapeAppearance.Kotatsu.iOS.BottomSheet</item>
-		<item name="backgroundTint">?colorSurfaceContainerLowest</item>
+		<item name="backgroundTint">@color/ios_surface_dark</item>
 	</style>
 
 	<!-- Shapes -->
@@ -141,6 +146,15 @@
 	<style name="ShapeAppearance.Kotatsu.iOS.Card" parent="">
 		<item name="cornerFamily">rounded</item>
 		<item name="cornerSize">@dimen/ios_radius_large</item>
+	</style>
+
+	<!-- Reading status badge -->
+	<style name="Widget.Kotatsu.iOS.ReadingBadge" parent="">
+		<item name="android:background">@drawable/bg_ios_reading_badge</item>
+		<item name="android:paddingHorizontal">@dimen/ios_spacing_md</item>
+		<item name="android:paddingVertical">5dp</item>
+		<item name="android:textAppearance">@style/TextAppearance.Kotatsu.iOS.Caption1</item>
+		<item name="android:textColor">@android:color/white</item>
 	</style>
 
 </resources>

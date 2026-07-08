@@ -2,21 +2,21 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 	<item>
 		<shape android:shape="rectangle">
-			<corners android:radius="@dimen/ios_radius_xl" />
-			<solid android:color="#30000000" />
+			<corners android:radius="@dimen/ios_radius_medium" />
+			<solid android:color="#18000000" />
 		</shape>
 	</item>
 	<item
-		android:bottom="3dp"
+		android:bottom="2dp"
 		android:left="0dp"
 		android:right="0dp"
 		android:top="0dp">
 		<shape android:shape="rectangle">
-			<corners android:radius="@dimen/ios_radius_xl" />
-			<solid android:color="@color/ios_surface_card" />
+			<corners android:radius="@dimen/ios_radius_medium" />
+			<solid android:color="@color/ios_surface_elevated" />
 			<stroke
 				android:width="0.5dp"
-				android:color="@color/ios_border_card" />
+				android:color="@color/ios_border_subtle" />
 		</shape>
 	</item>
 </layer-list>

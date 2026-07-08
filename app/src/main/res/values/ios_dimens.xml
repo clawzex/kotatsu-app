@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<!-- iOS-inspired spacing & radii -->
+	<!-- iOS-inspired spacing & radii — generous & consistent -->
 	<dimen name="ios_radius_small">12dp</dimen>
 	<dimen name="ios_radius_medium">16dp</dimen>
 	<dimen name="ios_radius_large">20dp</dimen>
@@ -13,14 +13,14 @@
 	<dimen name="ios_spacing_lg">16dp</dimen>
 	<dimen name="ios_spacing_xl">20dp</dimen>
 	<dimen name="ios_spacing_xxl">24dp</dimen>
-	<dimen name="ios_spacing_section">32dp</dimen>
+	<dimen name="ios_spacing_section">40dp</dimen>
 
 	<dimen name="ios_floating_nav_margin_h">16dp</dimen>
 	<dimen name="ios_floating_nav_margin_bottom">12dp</dimen>
 	<dimen name="ios_floating_nav_elevation">16dp</dimen>
 	<dimen name="ios_floating_search_margin_h">16dp</dimen>
 	<dimen name="ios_floating_search_margin_top">8dp</dimen>
-	<dimen name="ios_card_elevation">4dp</dimen>
+	<dimen name="ios_card_elevation">6dp</dimen>
 
 	<dimen name="ios_large_title_size">34sp</dimen>
 	<dimen name="ios_title1_size">28sp</dimen>
@@ -35,11 +35,14 @@
 	<dimen name="ios_cover_corner">20dp</dimen>
 	<dimen name="ios_cover_corner_medium">12dp</dimen>
 	<dimen name="ios_cover_corner_small">8dp</dimen>
-	<dimen name="ios_hero_height">300dp</dimen>
-	<dimen name="ios_floating_button_size">40dp</dimen>
-	<dimen name="ios_detail_cover_width">132dp</dimen>
+	<dimen name="ios_hero_height">320dp</dimen>
+	<dimen name="ios_floating_button_size">42dp</dimen>
+	<dimen name="ios_detail_cover_width">136dp</dimen>
 	<dimen name="ios_grid_item_padding">8dp</dimen>
 	<dimen name="ios_settings_row_min_height">56dp</dimen>
 	<dimen name="ios_settings_icon_size">28dp</dimen>
 	<dimen name="ios_settings_section_inset">20dp</dimen>
+	<dimen name="ios_chapter_item_min_height">64dp</dimen>
+	<dimen name="ios_chapter_item_padding_v">14dp</dimen>
+	<dimen name="ios_chapter_item_padding_h">18dp</dimen>
 </resources>

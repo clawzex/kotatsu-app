@@ -5,7 +5,7 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:background="?android:colorBackground"
+	android:background="@color/ios_surface_dark"
 	android:clipToPadding="false"
 	tools:context=".details.ui.DetailsActivity"
 	tools:ignore="ViewBindingType"
@@ -48,6 +48,7 @@
 				android:layout_height="wrap_content"
 				android:paddingBottom="@dimen/ios_spacing_section">
 
+				<!-- Hero backdrop with gradient overlay -->
 				<ImageView
 					android:id="@+id/imageView_hero_backdrop"
 					android:layout_width="0dp"
@@ -69,15 +70,16 @@
 					app:layout_constraintStart_toStartOf="parent"
 					app:layout_constraintTop_toTopOf="parent" />
 
+				<!-- Cover image with shadow and rounded corners -->
 				<org.koitharu.kotatsu.image.ui.CoverImageView
 					android:id="@+id/imageView_cover"
 					android:layout_width="@dimen/ios_detail_cover_width"
 					android:layout_height="0dp"
 					android:layout_marginStart="@dimen/ios_spacing_lg"
 					android:layout_marginTop="72dp"
-					android:background="?colorSecondaryContainer"
+					android:background="@color/ios_surface_elevated"
 					android:clipToOutline="true"
-					android:elevation="@dimen/ios_card_elevation"
+					android:elevation="12dp"
 					android:foreground="?selectableItemBackground"
 					android:scaleType="centerCrop"
 					app:allowRgb565="false"
@@ -98,7 +100,7 @@
 					android:layout_height="wrap_content"
 					android:layout_margin="@dimen/card_indicator_offset"
 					android:backgroundTint="@color/nsfw_16"
-					android:elevation="@dimen/ios_card_elevation"
+					android:elevation="14dp"
 					android:text="@string/nsfw_16"
 					android:visibility="gone"
 					app:layout_constraintBottom_toBottomOf="@id/imageView_cover"
@@ -112,12 +114,13 @@
 					android:layout_height="wrap_content"
 					android:layout_margin="@dimen/card_indicator_offset"
 					android:backgroundTint="@color/nsfw_18"
-					android:elevation="@dimen/ios_card_elevation"
+					android:elevation="14dp"
 					android:text="@string/nsfw"
 					android:visibility="gone"
 					app:layout_constraintBottom_toBottomOf="@id/imageView_cover"
 					app:layout_constraintEnd_toEndOf="@id/imageView_cover" />
 
+				<!-- Title — bold, clean typography -->
 				<org.koitharu.kotatsu.core.ui.widgets.SelectableTextView
 					android:id="@+id/textView_title"
 					android:layout_width="0dp"
@@ -128,7 +131,7 @@
 					android:ellipsize="end"
 					android:maxLines="@integer/details_title_lines"
 					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Title2"
-					android:textColor="@android:color/white"
+					android:textColor="@color/ios_text_primary"
 					android:textIsSelectable="true"
 					app:layout_constraintEnd_toEndOf="parent"
 					app:layout_constraintStart_toEndOf="@id/imageView_cover"
@@ -145,7 +148,7 @@
 					android:ellipsize="end"
 					android:maxLines="3"
 					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Subhead"
-					android:textColor="#CCFFFFFF"
+					android:textColor="@color/ios_text_secondary"
 					android:textIsSelectable="true"
 					app:layout_constraintEnd_toEndOf="parent"
 					app:layout_constraintStart_toEndOf="@id/imageView_cover"
@@ -162,7 +165,7 @@
 					android:ellipsize="end"
 					android:singleLine="true"
 					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Footnote"
-					android:textColor="#B3FFFFFF"
+					android:textColor="@color/ios_text_tertiary"
 					app:layout_constraintEnd_toEndOf="parent"
 					app:layout_constraintStart_toEndOf="@id/imageView_cover"
 					app:layout_constraintTop_toBottomOf="@id/textView_subtitle"
@@ -185,10 +188,10 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_marginStart="@dimen/ios_spacing_sm"
-					android:background="@drawable/bg_ios_floating_button"
+					android:background="@drawable/bg_ios_reading_badge"
 					android:paddingHorizontal="@dimen/ios_spacing_md"
-					android:paddingVertical="@dimen/ios_spacing_xs"
-					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Footnote"
+					android:paddingVertical="5dp"
+					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Caption1"
 					android:textColor="@android:color/white"
 					android:visibility="gone"
 					app:layout_constraintBottom_toBottomOf="@id/chip_favorite"
@@ -212,9 +215,10 @@
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
 					android:layout_marginStart="@dimen/ios_spacing_lg"
-					android:layout_marginTop="@dimen/ios_spacing_xl"
+					android:layout_marginTop="@dimen/ios_spacing_xxl"
 					android:text="@string/description"
 					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Title3"
+					android:textColor="@color/ios_text_primary"
 					app:layout_constraintEnd_toStartOf="@id/button_description_more"
 					app:layout_constraintStart_toStartOf="parent"
 					app:layout_constraintTop_toBottomOf="@id/card_details" />
@@ -236,9 +240,10 @@
 					android:layout_marginHorizontal="@dimen/ios_spacing_lg"
 					android:layout_marginTop="@dimen/ios_spacing_sm"
 					android:ellipsize="end"
-					android:lineSpacingMultiplier="1.25"
+					android:lineSpacingMultiplier="1.3"
 					android:maxLines="@integer/details_description_lines"
 					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Body"
+					android:textColor="@color/ios_text_secondary"
 					android:textIsSelectable="true"
 					app:layout_constraintEnd_toEndOf="parent"
 					app:layout_constraintStart_toStartOf="parent"
@@ -264,9 +269,10 @@
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
 					android:layout_marginStart="@dimen/ios_spacing_lg"
-					android:layout_marginTop="@dimen/ios_spacing_xl"
+					android:layout_marginTop="@dimen/ios_spacing_xxl"
 					android:text="@string/tracking"
 					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Title3"
+					android:textColor="@color/ios_text_primary"
 					app:layout_constraintEnd_toStartOf="@id/button_scrobbling_more"
 					app:layout_constraintStart_toStartOf="parent"
 					app:layout_constraintTop_toBottomOf="@id/chips_tags" />
@@ -312,9 +318,10 @@
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
 					android:layout_marginStart="@dimen/ios_spacing_lg"
-					android:layout_marginTop="@dimen/ios_spacing_xl"
+					android:layout_marginTop="@dimen/ios_spacing_xxl"
 					android:text="@string/related_manga"
 					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Title3"
+					android:textColor="@color/ios_text_primary"
 					app:layout_constraintEnd_toStartOf="@id/button_related_more"
 					app:layout_constraintStart_toStartOf="parent"
 					app:layout_constraintTop_toBottomOf="@id/recyclerView_scrobbling" />
@@ -358,6 +365,7 @@
 		</androidx.core.widget.NestedScrollView>
 	</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+	<!-- Floating action bar — frosted glass pill buttons -->
 	<LinearLayout
 		android:id="@+id/layout_floating_actions"
 		android:layout_width="match_parent"
@@ -426,7 +434,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_gravity="bottom"
-		android:background="?colorSurfaceContainerLow"
+		android:background="@color/ios_surface_dark"
 		android:elevation="9dp"
 		tools:layout_height="10dp" />
 

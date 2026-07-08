@@ -11,7 +11,7 @@
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
 		android:layout_marginHorizontal="@dimen/ios_spacing_lg"
-		android:layout_marginTop="@dimen/ios_spacing_md"
+		android:layout_marginTop="@dimen/ios_spacing_lg"
 		android:clipToOutline="true"
 		android:outlineProvider="background"
 		app:layout_constraintEnd_toEndOf="parent"
@@ -24,6 +24,7 @@
 			android:orientation="vertical"
 			android:paddingVertical="@dimen/ios_spacing_xs">
 
+			<!-- Source row -->
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -38,7 +39,7 @@
 					android:layout_height="@dimen/ios_settings_icon_size"
 					android:importantForAccessibility="no"
 					app:srcCompat="@drawable/ic_manga_source"
-					app:tint="?colorPrimary" />
+					app:tint="@color/ios_system_blue" />
 
 				<TextView
 					android:id="@+id/textView_source_label"
@@ -47,7 +48,8 @@
 					android:layout_marginStart="@dimen/ios_spacing_md"
 					android:minWidth="72dp"
 					android:text="@string/source"
-					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Subhead" />
+					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Subhead"
+					android:textColor="@color/ios_text_tertiary" />
 
 				<TextView
 					android:id="@+id/textView_source"
@@ -63,6 +65,7 @@
 					android:pointerIcon="hand"
 					android:singleLine="true"
 					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Body"
+					android:textColor="@color/ios_text_primary"
 					tools:text="MangaDex" />
 
 				<ImageView
@@ -81,6 +84,7 @@
 				android:layout_marginStart="56dp"
 				android:background="@color/ios_separator" />
 
+			<!-- Author row -->
 			<LinearLayout
 				android:id="@+id/row_author"
 				android:layout_width="match_parent"
@@ -96,7 +100,7 @@
 					android:layout_height="@dimen/ios_settings_icon_size"
 					android:importantForAccessibility="no"
 					app:srcCompat="@drawable/ic_user"
-					app:tint="?colorPrimary" />
+					app:tint="@color/ios_system_blue" />
 
 				<TextView
 					android:id="@+id/textView_author_label"
@@ -105,7 +109,8 @@
 					android:layout_marginStart="@dimen/ios_spacing_md"
 					android:minWidth="72dp"
 					android:text="@string/author"
-					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Subhead" />
+					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Subhead"
+					android:textColor="@color/ios_text_tertiary" />
 
 				<TextView
 					android:id="@+id/textView_author"
@@ -117,6 +122,7 @@
 					android:gravity="end"
 					android:singleLine="true"
 					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Body"
+					android:textColor="@color/ios_text_primary"
 					tools:text="Author name" />
 
 			</LinearLayout>
@@ -128,6 +134,7 @@
 				android:layout_marginStart="56dp"
 				android:background="@color/ios_separator" />
 
+			<!-- Translation row -->
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -142,7 +149,7 @@
 					android:layout_height="@dimen/ios_settings_icon_size"
 					android:importantForAccessibility="no"
 					app:srcCompat="@drawable/ic_language"
-					app:tint="?colorPrimary" />
+					app:tint="@color/ios_system_blue" />
 
 				<TextView
 					android:id="@+id/textView_translation_label"
@@ -151,7 +158,8 @@
 					android:layout_marginStart="@dimen/ios_spacing_md"
 					android:minWidth="72dp"
 					android:text="@string/translation"
-					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Subhead" />
+					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Subhead"
+					android:textColor="@color/ios_text_tertiary" />
 
 				<TextView
 					android:id="@+id/textView_translation"
@@ -164,6 +172,7 @@
 					android:gravity="end"
 					android:singleLine="true"
 					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Body"
+					android:textColor="@color/ios_text_primary"
 					tools:text="English" />
 
 			</LinearLayout>
@@ -175,6 +184,7 @@
 				android:layout_marginStart="56dp"
 				android:background="@color/ios_separator" />
 
+			<!-- Rating row -->
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -189,7 +199,7 @@
 					android:layout_height="@dimen/ios_settings_icon_size"
 					android:importantForAccessibility="no"
 					app:srcCompat="@drawable/ic_star_small"
-					app:tint="?colorPrimary" />
+					app:tint="@color/ios_system_blue" />
 
 				<TextView
 					android:id="@+id/textView_rating_label"
@@ -198,7 +208,8 @@
 					android:layout_marginStart="@dimen/ios_spacing_md"
 					android:minWidth="72dp"
 					android:text="@string/rating"
-					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Subhead" />
+					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Subhead"
+					android:textColor="@color/ios_text_tertiary" />
 
 				<RatingBar
 					android:id="@+id/ratingBar_rating"
@@ -220,6 +231,7 @@
 				android:layout_marginStart="56dp"
 				android:background="@color/ios_separator" />
 
+			<!-- State row -->
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -234,7 +246,7 @@
 					android:layout_height="@dimen/ios_settings_icon_size"
 					android:importantForAccessibility="no"
 					app:srcCompat="@drawable/ic_state_ongoing"
-					app:tint="?colorPrimary" />
+					app:tint="@color/ios_system_blue" />
 
 				<TextView
 					android:id="@+id/textView_state_label"
@@ -243,7 +255,8 @@
 					android:layout_marginStart="@dimen/ios_spacing_md"
 					android:minWidth="72dp"
 					android:text="@string/state"
-					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Subhead" />
+					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Subhead"
+					android:textColor="@color/ios_text_tertiary" />
 
 				<TextView
 					android:id="@+id/textView_state"
@@ -255,6 +268,7 @@
 					android:gravity="end"
 					android:singleLine="true"
 					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Body"
+					android:textColor="@color/ios_text_primary"
 					tools:text="Ongoing" />
 
 			</LinearLayout>
@@ -266,6 +280,7 @@
 				android:layout_marginStart="56dp"
 				android:background="@color/ios_separator" />
 
+			<!-- Chapters row -->
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -280,7 +295,7 @@
 					android:layout_height="@dimen/ios_settings_icon_size"
 					android:importantForAccessibility="no"
 					app:srcCompat="@drawable/ic_book_page"
-					app:tint="?colorPrimary" />
+					app:tint="@color/ios_system_blue" />
 
 				<TextView
 					android:id="@+id/textView_chapters_label"
@@ -289,7 +304,8 @@
 					android:layout_marginStart="@dimen/ios_spacing_md"
 					android:minWidth="72dp"
 					android:text="@string/chapters"
-					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Subhead" />
+					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Subhead"
+					android:textColor="@color/ios_text_tertiary" />
 
 				<TextView
 					android:id="@+id/textView_chapters"
@@ -301,6 +317,7 @@
 					android:gravity="end"
 					android:singleLine="true"
 					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Body"
+					android:textColor="@color/ios_text_primary"
 					tools:text="10 of 50" />
 
 			</LinearLayout>
@@ -312,6 +329,7 @@
 				android:layout_marginStart="56dp"
 				android:background="@color/ios_separator" />
 
+			<!-- On Device row -->
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -326,7 +344,7 @@
 					android:layout_height="@dimen/ios_settings_icon_size"
 					android:importantForAccessibility="no"
 					app:srcCompat="@drawable/ic_storage"
-					app:tint="?colorPrimary" />
+					app:tint="@color/ios_system_blue" />
 
 				<TextView
 					android:id="@+id/textView_local_label"
@@ -335,7 +353,8 @@
 					android:layout_marginStart="@dimen/ios_spacing_md"
 					android:minWidth="72dp"
 					android:text="@string/on_device"
-					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Subhead" />
+					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Subhead"
+					android:textColor="@color/ios_text_tertiary" />
 
 				<TextView
 					android:id="@+id/textView_local"
@@ -349,6 +368,7 @@
 					android:padding="4dp"
 					android:singleLine="true"
 					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Body"
+					android:textColor="@color/ios_text_primary"
 					tools:text="25 Mb" />
 
 				<ImageView
@@ -368,6 +388,7 @@
 				android:layout_marginStart="56dp"
 				android:background="@color/ios_separator" />
 
+			<!-- Progress row -->
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -382,7 +403,7 @@
 					android:layout_height="@dimen/ios_settings_icon_size"
 					android:importantForAccessibility="no"
 					app:srcCompat="@drawable/ic_timelapse"
-					app:tint="?colorPrimary" />
+					app:tint="@color/ios_system_blue" />
 
 				<TextView
 					android:id="@+id/textView_progress_label"
@@ -390,7 +411,8 @@
 					android:layout_height="wrap_content"
 					android:layout_marginStart="@dimen/ios_spacing_md"
 					android:text="@string/progress"
-					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Subhead" />
+					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Subhead"
+					android:textColor="@color/ios_text_tertiary" />
 
 				<com.google.android.material.progressindicator.LinearProgressIndicator
 					android:id="@+id/progress"
@@ -401,7 +423,7 @@
 					android:layout_weight="1"
 					android:indeterminate="false"
 					android:max="100"
-					app:trackColor="?android:colorBackground"
+					app:trackColor="@color/ios_surface_elevated"
 					tools:progress="40" />
 
 				<TextView
@@ -411,6 +433,7 @@
 					android:layout_marginStart="@dimen/ios_spacing_sm"
 					android:singleLine="true"
 					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Body"
+					android:textColor="@color/ios_text_primary"
 					tools:text="40%" />
 
 			</LinearLayout>
