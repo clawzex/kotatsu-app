@@ -288,7 +288,7 @@
 				android:minHeight="@dimen/ios_settings_row_min_height"
 				android:orientation="horizontal"
 				android:paddingHorizontal="@dimen/ios_spacing_lg"
-				android:paddingVertical="6dp">
+				android:paddingVertical="8dp">
 
 				<ImageView
 					android:layout_width="@dimen/ios_settings_icon_size"
@@ -393,10 +393,10 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:gravity="center_vertical"
-				android:minHeight="@dimen/ios_settings_row_min_height"
+				android:minHeight="48dp"
 				android:orientation="horizontal"
 				android:paddingHorizontal="@dimen/ios_spacing_lg"
-				android:paddingVertical="6dp">
+				android:paddingVertical="8dp">
 
 				<ImageView
 					android:layout_width="@dimen/ios_settings_icon_size"
