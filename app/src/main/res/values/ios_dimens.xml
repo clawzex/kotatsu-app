@@ -39,8 +39,8 @@
 	<dimen name="ios_floating_button_size">42dp</dimen>
 	<dimen name="ios_detail_cover_width">136dp</dimen>
 	<dimen name="ios_grid_item_padding">8dp</dimen>
-	<dimen name="ios_settings_row_min_height">56dp</dimen>
-	<dimen name="ios_settings_icon_size">28dp</dimen>
+	<dimen name="ios_settings_row_min_height">44dp</dimen>
+	<dimen name="ios_settings_icon_size">22dp</dimen>
 	<dimen name="ios_settings_section_inset">20dp</dimen>
 	<dimen name="ios_chapter_item_min_height">64dp</dimen>
 	<dimen name="ios_chapter_item_padding_v">14dp</dimen>

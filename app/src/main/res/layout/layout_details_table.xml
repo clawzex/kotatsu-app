@@ -22,7 +22,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:orientation="vertical"
-			android:paddingVertical="@dimen/ios_spacing_xs">
+			android:paddingVertical="2dp">
 
 			<!-- Source row -->
 			<LinearLayout
@@ -32,7 +32,7 @@
 				android:minHeight="@dimen/ios_settings_row_min_height"
 				android:orientation="horizontal"
 				android:paddingHorizontal="@dimen/ios_spacing_lg"
-				android:paddingVertical="@dimen/ios_spacing_md">
+				android:paddingVertical="6dp">
 
 				<ImageView
 					android:layout_width="@dimen/ios_settings_icon_size"
@@ -45,8 +45,8 @@
 					android:id="@+id/textView_source_label"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_marginStart="@dimen/ios_spacing_md"
-					android:minWidth="72dp"
+					android:layout_marginStart="@dimen/ios_spacing_sm"
+					android:minWidth="60dp"
 					android:text="@string/source"
 					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Subhead"
 					android:textColor="@color/ios_text_tertiary" />
@@ -55,7 +55,7 @@
 					android:id="@+id/textView_source"
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
-					android:layout_marginStart="@dimen/ios_spacing_md"
+					android:layout_marginStart="@dimen/ios_spacing_sm"
 					android:layout_weight="1"
 					android:background="@drawable/custom_selectable_item_background"
 					android:drawablePadding="4dp"
@@ -81,7 +81,7 @@
 			<View
 				android:layout_width="match_parent"
 				android:layout_height="0.5dp"
-				android:layout_marginStart="56dp"
+				android:layout_marginStart="44dp"
 				android:background="@color/ios_separator" />
 
 			<!-- Author row -->
@@ -93,7 +93,7 @@
 				android:minHeight="@dimen/ios_settings_row_min_height"
 				android:orientation="horizontal"
 				android:paddingHorizontal="@dimen/ios_spacing_lg"
-				android:paddingVertical="@dimen/ios_spacing_md">
+				android:paddingVertical="6dp">
 
 				<ImageView
 					android:layout_width="@dimen/ios_settings_icon_size"
@@ -106,8 +106,8 @@
 					android:id="@+id/textView_author_label"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_marginStart="@dimen/ios_spacing_md"
-					android:minWidth="72dp"
+					android:layout_marginStart="@dimen/ios_spacing_sm"
+					android:minWidth="60dp"
 					android:text="@string/author"
 					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Subhead"
 					android:textColor="@color/ios_text_tertiary" />
@@ -116,7 +116,7 @@
 					android:id="@+id/textView_author"
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
-					android:layout_marginStart="@dimen/ios_spacing_md"
+					android:layout_marginStart="@dimen/ios_spacing_sm"
 					android:layout_weight="1"
 					android:ellipsize="end"
 					android:gravity="end"
@@ -131,7 +131,7 @@
 				android:id="@+id/divider_after_author"
 				android:layout_width="match_parent"
 				android:layout_height="0.5dp"
-				android:layout_marginStart="56dp"
+				android:layout_marginStart="44dp"
 				android:background="@color/ios_separator" />
 
 			<!-- Translation row -->
@@ -142,7 +142,7 @@
 				android:minHeight="@dimen/ios_settings_row_min_height"
 				android:orientation="horizontal"
 				android:paddingHorizontal="@dimen/ios_spacing_lg"
-				android:paddingVertical="@dimen/ios_spacing_md">
+				android:paddingVertical="6dp">
 
 				<ImageView
 					android:layout_width="@dimen/ios_settings_icon_size"
@@ -155,8 +155,8 @@
 					android:id="@+id/textView_translation_label"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_marginStart="@dimen/ios_spacing_md"
-					android:minWidth="72dp"
+					android:layout_marginStart="@dimen/ios_spacing_sm"
+					android:minWidth="60dp"
 					android:text="@string/translation"
 					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Subhead"
 					android:textColor="@color/ios_text_tertiary" />
@@ -165,7 +165,7 @@
 					android:id="@+id/textView_translation"
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
-					android:layout_marginStart="@dimen/ios_spacing_md"
+					android:layout_marginStart="@dimen/ios_spacing_sm"
 					android:layout_weight="1"
 					android:drawablePadding="4dp"
 					android:ellipsize="end"
@@ -181,7 +181,7 @@
 				android:id="@+id/divider_after_translation"
 				android:layout_width="match_parent"
 				android:layout_height="0.5dp"
-				android:layout_marginStart="56dp"
+				android:layout_marginStart="44dp"
 				android:background="@color/ios_separator" />
 
 			<!-- Rating row -->
@@ -192,7 +192,7 @@
 				android:minHeight="@dimen/ios_settings_row_min_height"
 				android:orientation="horizontal"
 				android:paddingHorizontal="@dimen/ios_spacing_lg"
-				android:paddingVertical="@dimen/ios_spacing_md">
+				android:paddingVertical="6dp">
 
 				<ImageView
 					android:layout_width="@dimen/ios_settings_icon_size"
@@ -205,8 +205,8 @@
 					android:id="@+id/textView_rating_label"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_marginStart="@dimen/ios_spacing_md"
-					android:minWidth="72dp"
+					android:layout_marginStart="@dimen/ios_spacing_sm"
+					android:minWidth="60dp"
 					android:text="@string/rating"
 					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Subhead"
 					android:textColor="@color/ios_text_tertiary" />
@@ -216,7 +216,7 @@
 					style="?ratingBarStyleSmall"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_marginStart="@dimen/ios_spacing_md"
+					android:layout_marginStart="@dimen/ios_spacing_sm"
 					android:isIndicator="true"
 					android:max="1"
 					android:numStars="5"
@@ -228,7 +228,7 @@
 				android:id="@+id/divider_after_rating"
 				android:layout_width="match_parent"
 				android:layout_height="0.5dp"
-				android:layout_marginStart="56dp"
+				android:layout_marginStart="44dp"
 				android:background="@color/ios_separator" />
 
 			<!-- State row -->
@@ -239,7 +239,7 @@
 				android:minHeight="@dimen/ios_settings_row_min_height"
 				android:orientation="horizontal"
 				android:paddingHorizontal="@dimen/ios_spacing_lg"
-				android:paddingVertical="@dimen/ios_spacing_md">
+				android:paddingVertical="6dp">
 
 				<ImageView
 					android:layout_width="@dimen/ios_settings_icon_size"
@@ -252,8 +252,8 @@
 					android:id="@+id/textView_state_label"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_marginStart="@dimen/ios_spacing_md"
-					android:minWidth="72dp"
+					android:layout_marginStart="@dimen/ios_spacing_sm"
+					android:minWidth="60dp"
 					android:text="@string/state"
 					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Subhead"
 					android:textColor="@color/ios_text_tertiary" />
@@ -262,7 +262,7 @@
 					android:id="@+id/textView_state"
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
-					android:layout_marginStart="@dimen/ios_spacing_md"
+					android:layout_marginStart="@dimen/ios_spacing_sm"
 					android:layout_weight="1"
 					android:ellipsize="end"
 					android:gravity="end"
@@ -277,7 +277,7 @@
 				android:id="@+id/divider_after_state"
 				android:layout_width="match_parent"
 				android:layout_height="0.5dp"
-				android:layout_marginStart="56dp"
+				android:layout_marginStart="44dp"
 				android:background="@color/ios_separator" />
 
 			<!-- Chapters row -->
@@ -288,7 +288,7 @@
 				android:minHeight="@dimen/ios_settings_row_min_height"
 				android:orientation="horizontal"
 				android:paddingHorizontal="@dimen/ios_spacing_lg"
-				android:paddingVertical="@dimen/ios_spacing_md">
+				android:paddingVertical="6dp">
 
 				<ImageView
 					android:layout_width="@dimen/ios_settings_icon_size"
@@ -301,8 +301,8 @@
 					android:id="@+id/textView_chapters_label"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_marginStart="@dimen/ios_spacing_md"
-					android:minWidth="72dp"
+					android:layout_marginStart="@dimen/ios_spacing_sm"
+					android:minWidth="60dp"
 					android:text="@string/chapters"
 					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Subhead"
 					android:textColor="@color/ios_text_tertiary" />
@@ -311,7 +311,7 @@
 					android:id="@+id/textView_chapters"
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
-					android:layout_marginStart="@dimen/ios_spacing_md"
+					android:layout_marginStart="@dimen/ios_spacing_sm"
 					android:layout_weight="1"
 					android:ellipsize="end"
 					android:gravity="end"
@@ -326,7 +326,7 @@
 				android:id="@+id/divider_after_chapters"
 				android:layout_width="match_parent"
 				android:layout_height="0.5dp"
-				android:layout_marginStart="56dp"
+				android:layout_marginStart="44dp"
 				android:background="@color/ios_separator" />
 
 			<!-- On Device row -->
@@ -337,7 +337,7 @@
 				android:minHeight="@dimen/ios_settings_row_min_height"
 				android:orientation="horizontal"
 				android:paddingHorizontal="@dimen/ios_spacing_lg"
-				android:paddingVertical="@dimen/ios_spacing_md">
+				android:paddingVertical="6dp">
 
 				<ImageView
 					android:layout_width="@dimen/ios_settings_icon_size"
@@ -350,8 +350,8 @@
 					android:id="@+id/textView_local_label"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_marginStart="@dimen/ios_spacing_md"
-					android:minWidth="72dp"
+					android:layout_marginStart="@dimen/ios_spacing_sm"
+					android:minWidth="60dp"
 					android:text="@string/on_device"
 					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Subhead"
 					android:textColor="@color/ios_text_tertiary" />
@@ -360,7 +360,7 @@
 					android:id="@+id/textView_local"
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
-					android:layout_marginStart="@dimen/ios_spacing_md"
+					android:layout_marginStart="@dimen/ios_spacing_sm"
 					android:layout_weight="1"
 					android:background="@drawable/custom_selectable_item_background"
 					android:ellipsize="end"
@@ -385,7 +385,7 @@
 				android:id="@+id/divider_after_local"
 				android:layout_width="match_parent"
 				android:layout_height="0.5dp"
-				android:layout_marginStart="56dp"
+				android:layout_marginStart="44dp"
 				android:background="@color/ios_separator" />
 
 			<!-- Progress row -->
@@ -396,7 +396,7 @@
 				android:minHeight="@dimen/ios_settings_row_min_height"
 				android:orientation="horizontal"
 				android:paddingHorizontal="@dimen/ios_spacing_lg"
-				android:paddingVertical="@dimen/ios_spacing_md">
+				android:paddingVertical="6dp">
 
 				<ImageView
 					android:layout_width="@dimen/ios_settings_icon_size"
@@ -409,7 +409,7 @@
 					android:id="@+id/textView_progress_label"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_marginStart="@dimen/ios_spacing_md"
+					android:layout_marginStart="@dimen/ios_spacing_sm"
 					android:text="@string/progress"
 					android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Subhead"
 					android:textColor="@color/ios_text_tertiary" />
@@ -419,7 +419,7 @@
 					style="?linearProgressIndicatorStyle"
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
-					android:layout_marginStart="@dimen/ios_spacing_md"
+					android:layout_marginStart="@dimen/ios_spacing_sm"
 					android:layout_weight="1"
 					android:indeterminate="false"
 					android:max="100"
