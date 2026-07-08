@@ -395,7 +395,9 @@ class DownloadWorker @AssistedInject constructor(
 			}
 			return file
 		}
-		val request = PageLoader.createPageRequest(url, source)
+		val repo = mangaRepositoryFactory.create(source)
+		val referer = if (repo is org.koitharu.kotatsu.core.parser.ParserMangaRepository) "https://${repo.domain}/" else null
+		val request = PageLoader.createPageRequest(url, source, referer)
 		slowdownDispatcher.delay(source)
 		return imageProxyInterceptor.interceptPageRequest(request, okHttp)
 			.ensureSuccess()
