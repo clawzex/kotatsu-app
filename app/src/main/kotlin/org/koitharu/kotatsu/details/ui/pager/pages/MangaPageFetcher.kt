@@ -72,7 +72,9 @@ class MangaPageFetcher(
 	}
 
 	private suspend fun fetchPage(pageUrl: String): FetchResult {
-		val request = PageLoader.createPageRequest(pageUrl, page.source)
+		val repo = mangaRepositoryFactory.create(page.source)
+		val referer = if (repo is org.koitharu.kotatsu.core.parser.ParserMangaRepository) "https://${repo.domain}/" else null
+		val request = PageLoader.createPageRequest(pageUrl, page.source, referer)
 		return imageProxyInterceptor.interceptPageRequest(request, okHttpClient).use { response ->
 			if (!response.isSuccessful) {
 				throw HttpException(response.toNetworkResponse())

@@ -3,7 +3,7 @@
 	<item>
 		<shape android:shape="rectangle">
 			<corners android:radius="@dimen/ios_radius_large" />
-			<solid android:color="@color/ios_card_shadow" />
+			<solid android:color="#20000000" />
 		</shape>
 	</item>
 	<item
@@ -13,7 +13,10 @@
 		android:top="0dp">
 		<shape android:shape="rectangle">
 			<corners android:radius="@dimen/ios_radius_large" />
-			<solid android:color="?colorSurfaceContainerLowest" />
+			<solid android:color="@color/ios_surface_card" />
+			<stroke
+				android:width="0.5dp"
+				android:color="@color/ios_border_subtle" />
 		</shape>
 	</item>
 </layer-list>

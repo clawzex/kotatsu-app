@@ -99,7 +99,7 @@ class PageLoader @Inject constructor(
 	val loaderScope = lifecycle.lifecycleScope + InternalErrorHandler() + Dispatchers.Default
 
 	private val tasks = LongSparseArray<ProgressDeferred<Uri, Float>>()
-	private val semaphore = Semaphore(5)
+	private val semaphore = Semaphore(8)
 	private val convertLock = Mutex()
 	private val prefetchLock = Mutex()
 
@@ -301,7 +301,9 @@ class PageLoader @Inject constructor(
 				if (isPrefetch) {
 					downloadSlowdownDispatcher.delay(page.source)
 				}
-				val request = createPageRequest(pageUrl, page.source)
+				val request = createPageRequest(pageUrl, page.source, referer = getRepository(page.source).let { repo ->
+					if (repo is org.koitharu.kotatsu.core.parser.ParserMangaRepository) "https://${repo.domain}/" else null
+				})
 				downloadPageWithRetry(request, page.source, progress)
 			}
 		}
@@ -357,7 +359,7 @@ class PageLoader @Inject constructor(
 	companion object {
 
 		private const val PROGRESS_UNDEFINED = -1f
-		private const val PREFETCH_LIMIT_DEFAULT = 5
+		private const val PREFETCH_LIMIT_DEFAULT = 8
 		private const val PREFETCH_MIN_RAM_MB = 80L
 		private const val PAGE_DOWNLOAD_RETRIES = 3
 
@@ -365,10 +367,15 @@ class PageLoader @Inject constructor(
 			.maxStale(7, TimeUnit.DAYS)
 			.build()
 
-		fun createPageRequest(pageUrl: String, mangaSource: MangaSource) = Request.Builder()
+		fun createPageRequest(pageUrl: String, mangaSource: MangaSource, referer: String? = null) = Request.Builder()
 			.url(pageUrl)
 			.get()
 			.header(CommonHeaders.ACCEPT, "image/avif,image/webp,image/apng,image/*,*/*;q=0.8")
+			.apply {
+				if (referer != null) {
+					header(CommonHeaders.REFERER, referer)
+				}
+			}
 			.cacheControl(PAGE_CACHE_CONTROL)
 			.tag(MangaSource::class.java, mangaSource)
 			.build()

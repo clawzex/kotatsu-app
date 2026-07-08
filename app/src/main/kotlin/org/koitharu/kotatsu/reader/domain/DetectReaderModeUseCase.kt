@@ -81,7 +81,9 @@ class DetectReaderModeUseCase @Inject constructor(
 			}
 
 			else -> {
-				val request = PageLoader.createPageRequest(url, page.source)
+				val repo = mangaRepositoryFactory.create(page.source)
+				val referer = if (repo is org.koitharu.kotatsu.core.parser.ParserMangaRepository) "https://${repo.domain}/" else null
+				val request = PageLoader.createPageRequest(url, page.source, referer)
 				imageProxyInterceptor.interceptPageRequest(request, okHttpClient).use {
 					runInterruptible(Dispatchers.IO) {
 						getBitmapSize(it.body?.byteStream())

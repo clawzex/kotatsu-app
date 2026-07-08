@@ -40,6 +40,8 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koitharu.kotatsu.R
+import kotlinx.coroutines.flow.FlowCollector
+import org.koitharu.kotatsu.core.exceptions.CloudFlareException
 import org.koitharu.kotatsu.core.exceptions.resolve.DialogErrorObserver
 import org.koitharu.kotatsu.core.exceptions.resolve.SnackbarErrorObserver
 import org.koitharu.kotatsu.core.nav.AppRouter
@@ -147,18 +149,29 @@ class ReaderActivity :
 
         viewModel.onLoadingError.observeEvent(
             this,
-            DialogErrorObserver(
-                host = viewBinding.container,
-                fragment = null,
-                resolver = exceptionResolver,
-                onResolved = { isResolved ->
-                    if (isResolved) {
-                        viewModel.reload()
-                    } else if (viewModel.content.value.pages.isEmpty()) {
-                        dispatchNavigateUp()
+            object : FlowCollector<Throwable> {
+                override suspend fun emit(value: Throwable) {
+                    if (value is CloudFlareException) {
+                        val resolved = exceptionResolver.resolve(value)
+                        if (resolved) {
+                            viewModel.reload()
+                            return
+                        }
                     }
-                },
-            ),
+                    DialogErrorObserver(
+                        host = viewBinding.container,
+                        fragment = null,
+                        resolver = exceptionResolver,
+                        onResolved = { isResolved ->
+                            if (isResolved) {
+                                viewModel.reload()
+                            } else if (viewModel.content.value.pages.isEmpty()) {
+                                dispatchNavigateUp()
+                            }
+                        },
+                    ).emit(value)
+                }
+            },
         )
         viewModel.onError.observeEvent(
             this,

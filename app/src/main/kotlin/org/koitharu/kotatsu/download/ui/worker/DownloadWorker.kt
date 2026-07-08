@@ -395,7 +395,9 @@ class DownloadWorker @AssistedInject constructor(
 			}
 			return file
 		}
-		val request = PageLoader.createPageRequest(url, source)
+		val repo = mangaRepositoryFactory.create(source)
+		val referer = if (repo is org.koitharu.kotatsu.core.parser.ParserMangaRepository) "https://${repo.domain}/" else null
+		val request = PageLoader.createPageRequest(url, source, referer)
 		slowdownDispatcher.delay(source)
 		return imageProxyInterceptor.interceptPageRequest(request, okHttp)
 			.ensureSuccess()
@@ -586,7 +588,7 @@ class DownloadWorker @AssistedInject constructor(
 	private companion object {
 
 		const val MAX_FAILSAFE_ATTEMPTS = 2
-		const val MAX_PAGES_PARALLELISM = 4
+		const val MAX_PAGES_PARALLELISM = 8
 		const val DOWNLOAD_ERROR_DELAY = 2_000L
 		const val MAX_RETRY_DELAY = 7_200_000L // 2 hours
 		const val TAG = "download"

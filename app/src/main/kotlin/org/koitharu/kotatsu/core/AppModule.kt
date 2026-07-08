@@ -125,6 +125,8 @@ interface AppModule {
 				.diskCache(diskCacheFactory)
 				.logger(if (BuildConfig.DEBUG) DebugLogger() else null)
 				.allowRgb565(context.isLowRamDevice())
+				.memoryCachePolicy(coil3.request.CachePolicy.ENABLED)
+				.networkCachePolicy(coil3.request.CachePolicy.ENABLED)
 				.eventListener(captchaHandler)
 				.components {
 					add(

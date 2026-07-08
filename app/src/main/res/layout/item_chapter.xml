@@ -7,8 +7,8 @@
 	android:layout_height="wrap_content"
 	android:layout_marginHorizontal="@dimen/ios_spacing_sm"
 	android:layout_marginVertical="@dimen/ios_spacing_xs"
-	android:background="@drawable/bg_ios_card_elevated"
-	android:elevation="@dimen/ios_card_elevation"
+	android:background="@drawable/bg_ios_chapter_card"
+	android:elevation="2dp"
 	android:baselineAligned="false"
 	android:gravity="center_vertical"
 	android:minHeight="@dimen/chapter_list_item_height"
@@ -30,8 +30,8 @@
 			android:ellipsize="end"
 			android:singleLine="true"
 			android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Body"
-			tools:text="@tools:sample/lorem[15]"
-			tools:textColor="?android:textColorPrimary" />
+			android:textColor="@color/ios_text_primary"
+			tools:text="@tools:sample/lorem[15]" />
 
 		<TextView
 			android:id="@+id/textView_description"
@@ -41,8 +41,8 @@
 			android:ellipsize="end"
 			android:singleLine="true"
 			android:textAppearance="@style/TextAppearance.Kotatsu.iOS.Subhead"
-			tools:text="05.10.2021 • Scanlator"
-			tools:textColor="?android:textColorTertiary" />
+			android:textColor="@color/ios_text_tertiary"
+			tools:text="05.10.2021 • Scanlator" />
 	</LinearLayout>
 
 	<ImageView
@@ -51,13 +51,15 @@
 		android:layout_height="wrap_content"
 		android:layout_marginEnd="@dimen/ios_spacing_sm"
 		android:contentDescription="@string/bookmarks"
-		app:srcCompat="@drawable/ic_bookmark" />
+		app:srcCompat="@drawable/ic_bookmark"
+		app:tint="@color/ios_text_tertiary" />
 
 	<ImageView
 		android:id="@+id/imageView_downloaded"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:contentDescription="@string/downloaded"
-		app:srcCompat="@drawable/ic_storage" />
+		app:srcCompat="@drawable/ic_storage"
+		app:tint="@color/ios_text_tertiary" />
 
 </LinearLayout>

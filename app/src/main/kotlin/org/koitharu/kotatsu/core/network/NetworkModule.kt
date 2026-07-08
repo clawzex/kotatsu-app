@@ -9,6 +9,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Cache
 import okhttp3.CookieJar
+import okhttp3.Dispatcher
 import okhttp3.OkHttpClient
 import org.koitharu.kotatsu.BuildConfig
 import org.koitharu.kotatsu.core.network.cookies.AndroidCookieJar
@@ -70,6 +71,10 @@ interface NetworkModule {
 			proxyProvider: ProxyProvider,
 		): OkHttpClient = OkHttpClient.Builder().apply {
 			assertNotInMainThread()
+			dispatcher(Dispatcher().apply {
+				maxRequestsPerHost = 4
+				maxRequests = 12
+			})
 			connectTimeout(15, TimeUnit.SECONDS)
 			readTimeout(45, TimeUnit.SECONDS)
 			writeTimeout(20, TimeUnit.SECONDS)

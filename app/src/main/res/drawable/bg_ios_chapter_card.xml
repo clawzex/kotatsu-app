@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-	<!-- Shadow layer -->
 	<item>
 		<shape android:shape="rectangle">
-			<corners android:radius="@dimen/ios_radius_xl" />
-			<solid android:color="#30000000" />
+			<corners android:radius="@dimen/ios_radius_medium" />
+			<solid android:color="#18000000" />
 		</shape>
 	</item>
-	<!-- Glass surface with border -->
 	<item
-		android:bottom="3dp"
+		android:bottom="2dp"
 		android:left="0dp"
 		android:right="0dp"
 		android:top="0dp">
 		<shape android:shape="rectangle">
-			<corners android:radius="@dimen/ios_radius_xl" />
-			<solid android:color="@color/ios_glass_bg" />
+			<corners android:radius="@dimen/ios_radius_medium" />
+			<solid android:color="@color/ios_surface_card" />
 			<stroke
 				android:width="0.5dp"
-				android:color="@color/ios_glass_border" />
+				android:color="@color/ios_border_subtle" />
 		</shape>
 	</item>
 </layer-list>

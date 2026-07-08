@@ -54,4 +54,10 @@
 		<item name="android:paddingBottom">@dimen/ios_spacing_sm</item>
 	</style>
 
+	<style name="TextAppearance.Kotatsu.iOS.Caption1" parent="TextAppearance.Material3.LabelSmall">
+		<item name="android:textSize">@dimen/ios_caption_size</item>
+		<item name="android:fontFamily">sans-serif-medium</item>
+		<item name="android:letterSpacing">0.02</item>
+	</style>
+
 </resources>

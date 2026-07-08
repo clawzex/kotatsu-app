@@ -3,8 +3,8 @@
   iOS-inspired dark theme colors for Kotatsu
 -->
 <resources>
-	<color name="kotatsu_primary">#0A84FF</color>
-	<color name="kotatsu_primaryContainer">#004999</color>
+	<color name="kotatsu_primary">#00C9A7</color>
+	<color name="kotatsu_primaryContainer">#003D33</color>
 	<color name="kotatsu_onPrimary">#FFFFFF</color>
 	<color name="kotatsu_onPrimaryContainer">#B8DAFF</color>
 	<color name="kotatsu_inversePrimary">#007AFF</color>

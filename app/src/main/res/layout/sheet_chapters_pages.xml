@@ -56,10 +56,9 @@
                     style="?materialSplitButtonLeadingFilledStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_ios_read_button"
-                    android:backgroundTint="@null"
                     android:minWidth="@dimen/read_button_min_width"
                     android:text="@string/read"
+                    app:backgroundTint="@color/ios_system_blue"
                     android:textColor="@android:color/white" />
 
                 <Button
@@ -67,9 +66,8 @@
                     style="?materialSplitButtonIconFilledStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_ios_read_button"
-                    android:backgroundTint="@null"
                     android:contentDescription="@string/show_menu"
+                    app:backgroundTint="@color/ios_system_blue"
                     app:icon="?expandCollapseIndicator"
                     app:iconTint="@android:color/white"
                     app:toggleCheckedStateOnClick="false" />
