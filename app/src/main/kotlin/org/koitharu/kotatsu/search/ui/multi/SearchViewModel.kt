@@ -20,6 +20,8 @@ import kotlinx.coroutines.plus
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
 import org.koitharu.kotatsu.R
+import org.koitharu.kotatsu.core.exceptions.CloudFlareException
+import org.koitharu.kotatsu.core.exceptions.resolve.CaptchaHandler
 import org.koitharu.kotatsu.core.model.LocalMangaSource
 import org.koitharu.kotatsu.core.model.UnknownMangaSource
 import org.koitharu.kotatsu.core.nav.AppRouter
@@ -56,6 +58,7 @@ class SearchViewModel @Inject constructor(
 	private val sourcesRepository: MangaSourcesRepository,
 	private val historyRepository: HistoryRepository,
 	private val favouritesRepository: FavouritesRepository,
+	private val captchaHandler: CaptchaHandler,
 ) : BaseViewModel() {
 
 	val query = savedStateHandle.get<String>(AppRouter.KEY_QUERY).orEmpty()
@@ -183,37 +186,57 @@ class SearchViewModel @Inject constructor(
 
 	// impl
 
-	private suspend fun searchSource(source: MangaSource): SearchResultsListModel? = runCatchingCancellable {
-		val searchHelper = searchHelperFactory.create(source)
-		searchHelper(query, kind)
-	}.fold(
-		onSuccess = { result ->
-			if (result == null || result.manga.isEmpty()) {
-				null
+	private suspend fun searchSource(source: MangaSource): SearchResultsListModel? {
+		// First attempt
+		val firstResult = runCatchingCancellable {
+			val searchHelper = searchHelperFactory.create(source)
+			searchHelper(query, kind)
+		}
+
+		// If CloudFlare captcha, try auto-resolve and retry
+		val finalResult = firstResult.recoverCatching { error ->
+			if (error is CloudFlareException) {
+				val resolved = captchaHandler.handle(error)
+				if (resolved) {
+					val searchHelper = searchHelperFactory.create(source)
+					searchHelper(query, kind) ?: throw error
+				} else {
+					throw error
+				}
 			} else {
-				val list = mangaListMapper.toListModelList(
-					manga = result.manga,
-					mode = ListMode.GRID,
-				)
-				SearchResultsListModel(
-					titleResId = 0,
-					source = source,
-					list = list,
-					error = null,
-					listFilter = result.listFilter,
-					sortOrder = result.sortOrder,
-				)
+				throw error
 			}
-		},
-		onFailure = { error ->
-			error.printStackTraceDebug()
-			if (source is MangaParserSource && source.isBroken) {
-				null
-			} else {
-				SearchResultsListModel(0, source, null, null, emptyList(), error)
-			}
-		},
-	)
+		}
+
+		return finalResult.fold(
+			onSuccess = { result ->
+				if (result == null || result.manga.isEmpty()) {
+					null
+				} else {
+					val list = mangaListMapper.toListModelList(
+						manga = result.manga,
+						mode = ListMode.GRID,
+					)
+					SearchResultsListModel(
+						titleResId = 0,
+						source = source,
+						list = list,
+						error = null,
+						listFilter = result.listFilter,
+						sortOrder = result.sortOrder,
+					)
+				}
+			},
+			onFailure = { error ->
+				error.printStackTraceDebug()
+				if (source is MangaParserSource && source.isBroken) {
+					null
+				} else {
+					SearchResultsListModel(0, source, null, null, emptyList(), error)
+				}
+			},
+		)
+	}
 
 	private suspend fun searchHistory(): SearchResultsListModel? = runCatchingCancellable {
 		historyRepository.search(query, kind, Int.MAX_VALUE)
