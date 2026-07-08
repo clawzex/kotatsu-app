@@ -423,6 +423,7 @@
 					android:layout_weight="1"
 					android:indeterminate="false"
 					android:max="100"
+					app:indicatorColor="@color/ios_accent_teal"
 					app:trackColor="@color/ios_surface_elevated"
 					tools:progress="40" />
 

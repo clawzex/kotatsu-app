@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<color name="ios_grouped_background">#000000</color>
-	<color name="ios_secondary_grouped">#111111</color>
+	<color name="ios_secondary_grouped">#0E0E0E</color>
 	<color name="ios_label_primary">#FFFFFF</color>
 	<color name="ios_label_secondary">#99EBEBF5</color>
 	<color name="ios_label_tertiary">#4DEBEBF5</color>

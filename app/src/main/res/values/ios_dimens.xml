@@ -32,7 +32,7 @@
 	<dimen name="ios_footnote_size">13sp</dimen>
 	<dimen name="ios_caption_size">12sp</dimen>
 
-	<dimen name="ios_cover_corner">20dp</dimen>
+	<dimen name="ios_cover_corner">24dp</dimen>
 	<dimen name="ios_cover_corner_medium">12dp</dimen>
 	<dimen name="ios_cover_corner_small">8dp</dimen>
 	<dimen name="ios_hero_height">320dp</dimen>

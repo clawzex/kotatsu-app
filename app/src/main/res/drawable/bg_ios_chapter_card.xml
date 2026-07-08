@@ -13,7 +13,7 @@
 		android:top="0dp">
 		<shape android:shape="rectangle">
 			<corners android:radius="@dimen/ios_radius_medium" />
-			<solid android:color="@color/ios_surface_elevated" />
+			<solid android:color="@color/ios_surface_card" />
 			<stroke
 				android:width="0.5dp"
 				android:color="@color/ios_border_subtle" />

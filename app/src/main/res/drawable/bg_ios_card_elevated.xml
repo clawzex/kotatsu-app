@@ -16,7 +16,7 @@
 			<solid android:color="@color/ios_surface_card" />
 			<stroke
 				android:width="0.5dp"
-				android:color="@color/ios_border_card" />
+				android:color="@color/ios_border_subtle" />
 		</shape>
 	</item>
 </layer-list>
