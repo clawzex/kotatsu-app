@@ -19,41 +19,48 @@ class CaptchaContinuationClient(
 
 	private val oldClearance = CloudFlareHelper.getClearanceCookie(cookieJar, targetUrl)
 	private val handler = Handler(Looper.getMainLooper())
-	private val cookieCheckRunnable = object : Runnable {
+	private var webViewRef: WebView? = null
+	private val cookieCheckRunnable: Runnable = object : Runnable {
 		override fun run() {
 			syncCookiesFromWebView()
-			val clearance = CloudFlareHelper.getClearanceCookie(cookieJar, targetUrl)
-			if (clearance != null && clearance != oldClearance) {
-				webViewRef?.let { resumeContinuation(it) }
+			if (isClearanceObtained()) {
+				val wv = webViewRef
+				if (wv != null) {
+					handler.removeCallbacks(this)
+					resumeContinuation(wv)
+				}
 			} else {
 				handler.postDelayed(this, COOKIE_CHECK_INTERVAL)
 			}
 		}
 	}
-	private var webViewRef: WebView? = null
 
+	// Do NOT call super — parent's onPageFinished calls resumeContinuation which
+	// would prematurely resolve before the CF challenge is actually solved.
 	override fun onPageFinished(view: WebView?, url: String?) {
-		super.onPageFinished(view, url)
 		syncCookiesFromWebView()
-		checkClearance(view)
+		if (view != null && isClearanceObtained()) {
+			handler.removeCallbacks(cookieCheckRunnable)
+			resumeContinuation(view)
+		}
 	}
 
 	override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-		super.onPageStarted(view, url, favicon)
 		webViewRef = view
 		syncCookiesFromWebView()
-		checkClearance(view)
+		if (view != null && isClearanceObtained()) {
+			handler.removeCallbacks(cookieCheckRunnable)
+			resumeContinuation(view)
+			return
+		}
 		// Start periodic cookie polling to catch Turnstile solutions
 		handler.removeCallbacks(cookieCheckRunnable)
 		handler.postDelayed(cookieCheckRunnable, COOKIE_CHECK_INTERVAL)
 	}
 
-	private fun checkClearance(view: WebView?) {
+	private fun isClearanceObtained(): Boolean {
 		val clearance = CloudFlareHelper.getClearanceCookie(cookieJar, targetUrl)
-		if (clearance != null && clearance != oldClearance) {
-			handler.removeCallbacks(cookieCheckRunnable)
-			resumeContinuation(view)
-		}
+		return clearance != null && clearance != oldClearance
 	}
 
 	/**
@@ -61,20 +68,20 @@ class CaptchaContinuationClient(
 	 * This ensures cf_clearance obtained by the WebView is available to OkHttp requests.
 	 */
 	private fun syncCookiesFromWebView() {
-		val url = targetUrl.toHttpUrlOrNull() ?: return
+		val httpUrl = targetUrl.toHttpUrlOrNull() ?: return
 		val cookieManager = CookieManager.getInstance()
 		val cookieString = cookieManager.getCookie(targetUrl) ?: return
 		val cookies = cookieString.split(";").mapNotNull { raw ->
 			val trimmed = raw.trim()
 			if (trimmed.isEmpty()) return@mapNotNull null
-			Cookie.parse(url, trimmed)
+			Cookie.parse(httpUrl, trimmed)
 		}
 		if (cookies.isNotEmpty()) {
-			cookieJar.saveFromResponse(url, cookies)
+			cookieJar.saveFromResponse(httpUrl, cookies)
 		}
 	}
 
 	companion object {
-		private const val COOKIE_CHECK_INTERVAL = 500L // Check every 500ms
+		private const val COOKIE_CHECK_INTERVAL = 500L
 	}
 }
