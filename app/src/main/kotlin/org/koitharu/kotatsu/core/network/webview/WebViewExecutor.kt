@@ -13,6 +13,8 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
+import okhttp3.Cookie
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import org.koitharu.kotatsu.core.exceptions.CloudFlareException
 import org.koitharu.kotatsu.core.network.CommonHeaders
 import org.koitharu.kotatsu.core.network.cookies.MutableCookieJar
@@ -118,7 +120,7 @@ class WebViewExecutor @Inject constructor(
 	 * so the WebView starts with any existing session cookies.
 	 */
 	private fun syncCookiesToWebView(url: String) {
-		val httpUrl = okhttp3.HttpUrl.Companion.toHttpUrlOrNull(url) ?: return
+		val httpUrl = url.toHttpUrlOrNull() ?: return
 		val cookies = cookieJar.loadForRequest(httpUrl)
 		val cookieManager = android.webkit.CookieManager.getInstance()
 		for (cookie in cookies) {
@@ -132,13 +134,13 @@ class WebViewExecutor @Inject constructor(
 	 * to ensure cf_clearance and other session cookies are available.
 	 */
 	private fun syncCookiesFromWebView(url: String) {
-		val httpUrl = okhttp3.HttpUrl.Companion.toHttpUrlOrNull(url) ?: return
+		val httpUrl = url.toHttpUrlOrNull() ?: return
 		val cookieManager = android.webkit.CookieManager.getInstance()
 		val cookieString = cookieManager.getCookie(url) ?: return
 		val cookies = cookieString.split(";").mapNotNull { raw ->
 			val trimmed = raw.trim()
 			if (trimmed.isEmpty()) return@mapNotNull null
-			okhttp3.Cookie.parse(httpUrl, trimmed)
+			Cookie.parse(httpUrl, trimmed)
 		}
 		if (cookies.isNotEmpty()) {
 			cookieJar.saveFromResponse(httpUrl, cookies)
