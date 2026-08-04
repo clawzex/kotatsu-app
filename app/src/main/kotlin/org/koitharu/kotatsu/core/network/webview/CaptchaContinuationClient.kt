@@ -72,9 +72,7 @@ class CaptchaContinuationClient(
 		val cookieManager = CookieManager.getInstance()
 		val cookieString = cookieManager.getCookie(targetUrl) ?: return
 		val cookies = cookieString.split(";").mapNotNull { raw ->
-			val trimmed = raw.trim()
-			if (trimmed.isEmpty()) return@mapNotNull null
-			Cookie.parse(httpUrl, trimmed)
+			org.koitharu.kotatsu.core.network.cookies.AndroidCookieJar.parseWebViewCookie(httpUrl, raw)
 		}
 		if (cookies.isNotEmpty()) {
 			cookieJar.saveFromResponse(httpUrl, cookies)

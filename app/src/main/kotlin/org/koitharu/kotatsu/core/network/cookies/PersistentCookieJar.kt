@@ -27,10 +27,12 @@ class PersistentCookieJar(
 		}
 		val merged = LinkedHashMap<String, Cookie>(fromBackup.size + fromPrimary.size)
 		for (cookie in fromBackup) {
-			merged[cookie.name] = cookie
+			val key = "${cookie.domain.removePrefix(".")}|${cookie.path}|${cookie.name}"
+			merged[key] = cookie
 		}
 		for (cookie in fromPrimary) {
-			merged[cookie.name] = cookie
+			val key = "${cookie.domain.removePrefix(".")}|${cookie.path}|${cookie.name}"
+			merged[key] = cookie
 		}
 		val result = merged.values.toList()
 		val missingInPrimary = result.filter { cookie ->

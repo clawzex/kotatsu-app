@@ -14,9 +14,9 @@ class AndroidCookieJar : MutableCookieJar {
 
 	@WorkerThread
 	override fun loadForRequest(url: HttpUrl): List<Cookie> {
-		val rawCookie = cookieManager.getCookie(url.toString()) ?: return emptyList()
+		val rawCookie = runCatching { cookieManager.getCookie(url.toString()) }.getOrNull() ?: return emptyList()
 		return rawCookie.split(';').mapNotNull {
-			Cookie.parse(url, it)
+			parseWebViewCookie(url, it)
 		}
 	}
 
@@ -26,10 +26,12 @@ class AndroidCookieJar : MutableCookieJar {
 			return
 		}
 		val urlString = url.toString()
-		for (cookie in cookies) {
-			cookieManager.setCookie(urlString, cookie.toString())
+		runCatching {
+			for (cookie in cookies) {
+				cookieManager.setCookie(urlString, cookie.toString())
+			}
+			safeFlush(cookieManager)
 		}
-		cookieManager.flush()
 	}
 
 	override fun removeCookies(url: HttpUrl, predicate: Predicate<Cookie>?) {
@@ -38,18 +40,61 @@ class AndroidCookieJar : MutableCookieJar {
 			return
 		}
 		val urlString = url.toString()
-		for (c in cookies) {
-			if (predicate != null && !predicate.test(c)) {
-				continue
+		runCatching {
+			for (c in cookies) {
+				if (predicate != null && !predicate.test(c)) {
+					continue
+				}
+				val nc = c.newBuilder()
+					.expiresAt(System.currentTimeMillis() - 100000)
+					.build()
+				cookieManager.setCookie(urlString, nc.toString())
 			}
-			val nc = c.newBuilder()
-				.expiresAt(System.currentTimeMillis() - 100000)
-				.build()
-			cookieManager.setCookie(urlString, nc.toString())
+			safeFlush(cookieManager)
 		}
 	}
 
 	override suspend fun clear() = suspendCoroutine<Boolean> { continuation ->
-		cookieManager.removeAllCookies(continuation::resume)
+		runCatching {
+			cookieManager.removeAllCookies(continuation::resume)
+		}.onFailure {
+			continuation.resume(false)
+		}
+	}
+
+	companion object {
+		fun safeFlush(cookieManager: CookieManager) {
+			try {
+				cookieManager.flush()
+			} catch (e: Throwable) {
+				runCatching {
+					java.util.concurrent.Executors.newSingleThreadExecutor().execute {
+						runCatching { cookieManager.flush() }
+					}
+				}
+			}
+		}
+
+		fun parseWebViewCookie(url: HttpUrl, rawCookie: String): Cookie? {
+			val trimmed = rawCookie.trim()
+			if (trimmed.isEmpty()) return null
+			val topDomain = runCatching { url.topPrivateDomain() }.getOrNull()
+				?: extractRootDomain(url.host)
+			val cookieWithDomain = if (trimmed.contains("domain=", ignoreCase = true)) {
+				trimmed
+			} else {
+				"$trimmed; domain=.$topDomain"
+			}
+			return Cookie.parse(url, cookieWithDomain)
+				?: Cookie.parse(url, trimmed)
+		}
+
+		private fun extractRootDomain(host: String): String {
+			val parts = host.split('.')
+			if (parts.size >= 2 && !host.matches(Regex("\\d+\\.\\d+\\.\\d+\\.\\d+"))) {
+				return parts.takeLast(2).joinToString(".")
+			}
+			return host
+		}
 	}
 }

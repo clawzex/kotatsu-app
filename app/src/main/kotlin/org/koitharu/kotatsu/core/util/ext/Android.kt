@@ -25,6 +25,7 @@ import android.os.PowerManager
 import android.provider.Settings
 import android.view.ViewPropertyAnimator
 import android.webkit.CookieManager
+import android.webkit.WebSettings
 import android.webkit.WebView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.CheckResult
@@ -210,11 +211,15 @@ fun Context.ensureRamAtLeast(requiredSize: Long) {
 fun WebView.configureForParser(userAgentOverride: String?) = with(settings) {
 	javaScriptEnabled = true
 	domStorageEnabled = true
+	databaseEnabled = true
+	javaScriptCanOpenWindowsAutomatically = true
+	useWideViewPort = true
+	loadWithOverviewMode = true
 	mediaPlaybackRequiresUserGesture = false
+	mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
 	if (WebViewFeature.isFeatureSupported(WebViewFeature.MUTE_AUDIO)) {
 		WebViewCompat.setAudioMuted(this@configureForParser, true)
 	}
-	databaseEnabled = true
 	allowContentAccess = false
 	if (userAgentOverride != null) {
 		userAgentString = userAgentOverride

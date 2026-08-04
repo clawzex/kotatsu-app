@@ -44,8 +44,10 @@ import org.koitharu.kotatsu.core.model.UnknownMangaSource
 import org.koitharu.kotatsu.core.model.getTitle
 import org.koitharu.kotatsu.core.model.isNsfw
 import org.koitharu.kotatsu.core.nav.AppRouter
+import org.koitharu.kotatsu.core.network.webview.AutoCaptchaSolver
 import org.koitharu.kotatsu.core.network.webview.WebViewExecutor
 import org.koitharu.kotatsu.core.parser.favicon.faviconUri
+import org.koitharu.kotatsu.core.prefs.AppSettings
 import org.koitharu.kotatsu.core.prefs.SourceSettings
 import org.koitharu.kotatsu.core.util.ext.checkNotificationPermission
 import org.koitharu.kotatsu.core.util.ext.getNotificationIconSize
@@ -68,6 +70,8 @@ class CaptchaHandler @Inject constructor(
 	private val databaseProvider: Provider<MangaDatabase>,
 	private val coilProvider: Provider<ImageLoader>,
 	private val webViewExecutor: WebViewExecutor,
+	private val autoCaptchaSolver: AutoCaptchaSolver,
+	private val settings: AppSettings,
 ) : EventListener() {
 
 	private val exceptionMap = MutableScatterMap<MangaSource, CloudFlareProtectedException>()
@@ -107,7 +111,14 @@ class CaptchaHandler @Inject constructor(
 		if (source == UnknownMangaSource) {
 			return@withContext false
 		}
+		if (exception is CloudFlareProtectedException && settings.isAutoCaptchaEnabled) {
+			if (autoCaptchaSolver.trySolve(exception, AUTO_SOLVE_TIMEOUT)) {
+				onCaptchaSolved(source)
+				return@withContext true
+			}
+		}
 		if (exception != null && webViewExecutor.tryResolveCaptcha(exception, RESOLVE_TIMEOUT)) {
+			onCaptchaSolved(source)
 			return@withContext true
 		}
 		mutex.withLock {
@@ -135,6 +146,19 @@ class CaptchaHandler @Inject constructor(
 			}
 		}
 		false
+	}
+
+	private suspend fun onCaptchaSolved(source: MangaSource) {
+		mutex.withLock {
+			val removed = exceptionMap.remove(source)
+			val dao = databaseProvider.get().getSourcesDao()
+			dao.setCfState(source.name, CloudFlareHelper.PROTECTION_NOT_DETECTED)
+			if (context.checkNotificationPermission(CHANNEL_ID)) {
+				if (removed != null) {
+					NotificationManagerCompat.from(context).cancel(TAG, source.hashCode())
+				}
+			}
+		}
 	}
 
 	@RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
@@ -288,5 +312,6 @@ class CaptchaHandler @Inject constructor(
 		private const val SETTINGS_ACTION_CODE = 3
 		private const val ACTION_DISCARD = "org.koitharu.kotatsu.CAPTCHA_DISCARD"
 		private const val RESOLVE_TIMEOUT = 45_000L
+		private const val AUTO_SOLVE_TIMEOUT = 35_000L
 	}
 }

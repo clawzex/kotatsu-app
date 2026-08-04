@@ -1,8 +1,6 @@
 package org.koitharu.kotatsu.core.network.webview
 
 import android.content.Context
-import android.util.AndroidRuntimeException
-import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.annotation.MainThread
@@ -16,9 +14,11 @@ import kotlinx.coroutines.withTimeout
 import okhttp3.Cookie
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import org.koitharu.kotatsu.core.exceptions.CloudFlareException
+import org.koitharu.kotatsu.core.exceptions.CloudFlareProtectedException
 import org.koitharu.kotatsu.core.network.CommonHeaders
 import org.koitharu.kotatsu.core.network.cookies.MutableCookieJar
 import org.koitharu.kotatsu.core.network.proxy.ProxyProvider
+import org.koitharu.kotatsu.core.network.tls.ChromeTlsIdentity
 import org.koitharu.kotatsu.core.parser.MangaRepository
 import org.koitharu.kotatsu.core.parser.ParserMangaRepository
 import org.koitharu.kotatsu.core.util.ext.configureForParser
@@ -43,14 +43,8 @@ class WebViewExecutor @Inject constructor(
 	private var webViewCached: WeakReference<WebView>? = null
 	private val mutex = Mutex()
 
-	val defaultUserAgent: String? by lazy {
-		try {
-			WebSettings.getDefaultUserAgent(context)
-		} catch (e: AndroidRuntimeException) {
-			e.printStackTraceDebug()
-			// Probably WebView is not available
-			null
-		}
+	val defaultUserAgent: String by lazy {
+		ChromeTlsIdentity.USER_AGENT
 	}
 
 	suspend fun evaluateJs(baseUrl: String?, script: String): String? = mutex.withLock {
@@ -82,9 +76,12 @@ class WebViewExecutor @Inject constructor(
 				withContext(Dispatchers.Main.immediate) {
 					val webView = obtainWebView()
 					try {
-						exception.source.getUserAgent()?.let {
-							webView.settings.userAgentString = it
-						}
+						// Must match tls-client UA or Cloudflare rejects cf_clearance.
+						val protectedHeaders = (exception as? CloudFlareProtectedException)?.headers
+						webView.settings.userAgentString =
+							protectedHeaders?.get(CommonHeaders.USER_AGENT)?.takeIf { it.isNotBlank() }
+								?: exception.source.getUserAgent()
+								?: defaultUserAgent
 						// Sync existing cookies to WebView before loading
 						syncCookiesToWebView(exception.url)
 						withTimeout(attemptTimeout) {
@@ -98,7 +95,7 @@ class WebViewExecutor @Inject constructor(
 							}
 						}
 						// Flush and sync cookies back
-						android.webkit.CookieManager.getInstance().flush()
+						org.koitharu.kotatsu.core.network.cookies.AndroidCookieJar.safeFlush(android.webkit.CookieManager.getInstance())
 						syncCookiesFromWebView(exception.url)
 					} finally {
 						webView.reset()
@@ -126,7 +123,7 @@ class WebViewExecutor @Inject constructor(
 		for (cookie in cookies) {
 			cookieManager.setCookie(url, cookie.toString())
 		}
-		cookieManager.flush()
+		org.koitharu.kotatsu.core.network.cookies.AndroidCookieJar.safeFlush(cookieManager)
 	}
 
 	/**
@@ -138,9 +135,7 @@ class WebViewExecutor @Inject constructor(
 		val cookieManager = android.webkit.CookieManager.getInstance()
 		val cookieString = cookieManager.getCookie(url) ?: return
 		val cookies = cookieString.split(";").mapNotNull { raw ->
-			val trimmed = raw.trim()
-			if (trimmed.isEmpty()) return@mapNotNull null
-			Cookie.parse(httpUrl, trimmed)
+			org.koitharu.kotatsu.core.network.cookies.AndroidCookieJar.parseWebViewCookie(httpUrl, raw)
 		}
 		if (cookies.isNotEmpty()) {
 			cookieJar.saveFromResponse(httpUrl, cookies)
@@ -156,7 +151,7 @@ class WebViewExecutor @Inject constructor(
 				return@withContext it
 			}
 			WebView(context).also {
-				it.configureForParser(null)
+				it.configureForParser(defaultUserAgent)
 				webViewCached = WeakReference(it)
 				proxyProvider.applyWebViewConfig()
 				it.onResume()
@@ -168,6 +163,7 @@ class WebViewExecutor @Inject constructor(
 	private fun MangaSource.getUserAgent(): String? {
 		val repository = mangaRepositoryFactoryProvider.get().create(this) as? ParserMangaRepository
 		return repository?.getRequestHeaders()?.get(CommonHeaders.USER_AGENT)
+			?: defaultUserAgent
 	}
 
 	@MainThread
