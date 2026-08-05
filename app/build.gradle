@@ -46,11 +46,15 @@ android {
 			// Default values here match the CI keystore (app/debug.keystore, alias=debug, password=android).
 			// Use findProperty() for dot-separated keys — project.property() fails on dots in Groovy.
 			// Use prefixed local variable names to avoid Groovy parsing 'prop prop' as a method call.
-			def _file = project.findProperty('signing.debug.file') ?: 'app/debug.keystore'
+			// Use rootProject.file() so the path is always relative to the project root,
+			// not the app/ subproject directory (avoids doubling 'app/' in the resolved path).
+			def _file = rootProject.file(
+				project.findProperty('signing.debug.file') ?: 'app/debug.keystore'
+			)
 			def _alias = project.findProperty('signing.debug.keyAlias') ?: 'debug'
 			def _store = project.findProperty('signing.debug.storePassword') ?: 'android'
 			def _key = project.findProperty('signing.debug.keyPassword') ?: 'android'
-			storeFile file(_file)
+			storeFile _file
 			storePassword _store
 			keyAlias _alias
 			keyPassword _key
