@@ -33,7 +33,7 @@ jobs:
       - name: Checkout parsers
         uses: actions/checkout@v4
         with:
-          repository: Admin-Dev-git/kotatsu-parsers
+          repository: clawzex/kotatsu-parsers
           path: kotatsu-parsers
 
       - name: Set up JDK 17

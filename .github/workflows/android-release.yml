@@ -32,8 +32,8 @@ env:
   # CI only — do not use for production distribution.
   KEYSTORE_ALIAS: debug
   KEYSTORE_PASSWORD: android
-  # kotatsu-parsers repo to publish from (change to clawzex/kotatsu-parsers for your fork)
-  PARSERS_REPO: Admin-Dev-git/kotatsu-parsers
+  # kotatsu-parsers repo to publish from (your fork)
+  PARSERS_REPO: clawzex/kotatsu-parsers
   GRADLE_OPTS: -Dorg.gradle.jvmargs=-Xmx2g -Dorg.gradle.daemon=false
 
 jobs:
