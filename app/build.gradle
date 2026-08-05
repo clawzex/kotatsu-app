@@ -45,14 +45,15 @@ android {
 			// In CI: values are overridden by -P arguments passed from the GitHub Actions workflow.
 			// Default values here match the CI keystore (app/debug.keystore, alias=debug, password=android).
 			// Use findProperty() for dot-separated keys — project.property() fails on dots in Groovy.
-			def keystoreFile = project.findProperty('signing.debug.file') ?: 'app/debug.keystore'
-			def keyAlias = project.findProperty('signing.debug.keyAlias') ?: 'debug'
-			def storePassword = project.findProperty('signing.debug.storePassword') ?: 'android'
-			def keyPassword = project.findProperty('signing.debug.keyPassword') ?: 'android'
-			storeFile file(keystoreFile)
-			storePassword storePassword
-			keyAlias keyAlias
-			keyPassword keyPassword
+			// Use prefixed local variable names to avoid Groovy parsing 'prop prop' as a method call.
+			def _file = project.findProperty('signing.debug.file') ?: 'app/debug.keystore'
+			def _alias = project.findProperty('signing.debug.keyAlias') ?: 'debug'
+			def _store = project.findProperty('signing.debug.storePassword') ?: 'android'
+			def _key = project.findProperty('signing.debug.keyPassword') ?: 'android'
+			storeFile file(_file)
+			storePassword _store
+			keyAlias _alias
+			keyPassword _key
 		}
 	}
 
