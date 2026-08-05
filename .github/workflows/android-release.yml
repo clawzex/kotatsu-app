@@ -39,8 +39,11 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    # Replace "release" with your GitHub environment name if different
-    environment: kotatsu
+    environment:
+      name: kotatsu
+      url: https://github.com/clawzex/kotatsu-app
+    permissions:
+      contents: read
     steps:
       - name: Checkout app
         uses: actions/checkout@v4
